@@ -63,6 +63,24 @@
             transform: translateX(0);
         }
         
+        /* Fade-in animation styles */
+        .fade-in-element {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-element.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom style for bigger font in Editorial Section */
+        .editorial-title {
+            font-size: 3.5rem; /* Adjust as needed, Tailwind's text-5xl is 3rem */
+            line-height: 1;
+        }
+
         @media (max-width: 768px) {
             .hero-section {
                 height: 70vh;
@@ -70,6 +88,9 @@
             
             .product-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            .editorial-title {
+                font-size: 2.5rem; /* Adjust for smaller screens */
             }
         }
         
@@ -80,6 +101,9 @@
             
             .product-grid {
                 grid-template-columns: 1fr;
+            }
+            .editorial-title {
+                font-size: 2rem; /* Adjust for even smaller screens */
             }
         }
     </style>
@@ -95,8 +119,8 @@
             <div class="flex justify-between h-20 items-center">
                 <!-- Left Side -->
                 <div class="hidden md:flex items-center space-x-6">
-                    <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Women</a>
                     <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Men</a>
+                    <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Women</a>
                 </div>
 
                 <!-- Center Logo -->
@@ -128,8 +152,8 @@
             <i class="fas fa-times"></i>
         </button>
         <div class="mt-12 space-y-6">
-            <a href="#" class="block text-black uppercase text-sm font-medium py-2">Women</a>
             <a href="#" class="block text-black uppercase text-sm font-medium py-2">Men</a>
+            <a href="#" class="block text-black uppercase text-sm font-medium py-2">Women</a>
             <div class="border-t border-gray-200 pt-4 space-y-4">
                 <a href="#" class="block text-black py-2"><i class="fas fa-search mr-2"></i>Search</a>
                 <a href="#" class="block text-black py-2"><i class="fas fa-user mr-2"></i>Account</a>
@@ -154,7 +178,7 @@
         </div>
         
     </section>
-    <section>
+    <section class="fade-in-element">
         <br>
         <br>
           <div class="text-center mb-16">
@@ -162,7 +186,7 @@
             <p class="max-w-2xl mx-auto text-gray-600">Discover our premium t-shirts and shorts for the season.</p>
         </div>
          <!-- Products Grid -->
-    <section class="pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section class="pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto fade-in-element">
         <div class="product-grid grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             <!-- T-Shirts -->
             <div class="product-card relative group">
@@ -229,16 +253,14 @@
     </section>
     
     <!-- Editorial Section -->
-    <section class="bg-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+    <section class="bg-gray-100 py-16 px-4 sm:px-6 lg:px-8 fade-in-element">
         <div class="max-w-7xl mx-auto">
             <div class="flex flex-col md:flex-row items-center gap-12">
-                <div class="md:w-1/2">
-                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2982689f-d0c1-4027-b374-9e6578587836.png" alt="CYLO editorial shoot featuring models in natural light studio setting" class="w-full h-auto"/>
-                </div>
-                <div class="md:w-1/2 mt-6 md:mt-0">
-                    <h2 class="text-3xl font-light uppercase tracking-wider mb-6">The CYLO Edit</h2>
-                    <p class="text-gray-600 mb-6">At CYLO, we believe in timeless fashion that transcends seasons. Our designs blend contemporary aesthetics with enduring craftsmanship.</p>
-                    <p class="text-gray-600 mb-8">Each piece is thoughtfully designed to become a staple in your wardrobe, crafted from premium materials sourced responsibly.</p>
+                <!-- Removed the image div -->
+                <div class="md:w-full mt-6 md:mt-0 text-center"> <!-- Changed to md:w-full and added text-center -->
+                    <h2 class="editorial-title font-light uppercase tracking-wider mb-6">The CYLO Edit</h2> <!-- Added editorial-title class -->
+                    <p class="text-gray-600 mb-6 max-w-2xl mx-auto">At CYLO, we believe in timeless fashion that transcends seasons. Our designs blend contemporary aesthetics with enduring craftsmanship.</p>
+                    <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Each piece is thoughtfully designed to become a staple in your wardrobe, crafted from premium materials sourced responsibly.</p>
                     <a href="#" class="border border-black text-black px-8 py-3 hover:bg-black hover:text-white transition duration-300 uppercase text-sm font-medium">Discover Our Story</a>
                 </div>
             </div>
@@ -246,7 +268,7 @@
     </section>
     
     <!-- Newsletter Section -->
-    <section class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto fade-in-element">
         <div class="text-center mb-12">
             <h2 class="text-3xl font-light uppercase tracking-wider mb-4">Join CYLO</h2>
             <p class="max-w-2xl mx-auto text-gray-600">Sign up for exclusive access to collections, events and promotions.</p>
@@ -262,7 +284,7 @@
     </section>
     
     <!-- Footer -->
-    <footer class="bg-black text-white py-12 px-4 sm:px-6 lg:px-8">
+    <footer class="bg-black text-white py-12 px-4 sm:px-6 lg:px-8 fade-in-element">
         <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
                 <h3 class="text-lg font-medium uppercase tracking-wider mb-4">CYLO</h3>
@@ -328,7 +350,30 @@
         });
         
         // Product hover effect (already handled by CSS)
+
+        // Fade-in on scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const fadeInElements = document.querySelectorAll('.fade-in-element');
+
+            const observerOptions = {
+                root: null, // viewport
+                rootMargin: '0px',
+                threshold: 0.1 // 10% of the element must be visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Stop observing once it's visible
+                    }
+                });
+            }, observerOptions);
+
+            fadeInElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
     </script>
 </body>
 </html>
-  
