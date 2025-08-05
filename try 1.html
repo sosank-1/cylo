@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RELAXED FIT FLOWING SHIRT</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-weight: 400;
+      color: #1a1a1a;
+    }
+
+    header {
+      display: flex;
+      justify-content: flex-end;
+      gap: 40px;
+      padding: 20px 40px;
+      font-size: 14px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .container {
+      display: flex;
+      padding: 40px;
+    }
+
+    .product-image {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .product-image img {
+      max-width: 400px;
+      height: auto;
+    }
+
+    .product-info {
+      flex: 1;
+      padding-left: 60px;
+    }
+
+    .product-title {
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+
+    .product-price {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .tax-info {
+      font-size: 11px;
+      color: gray;
+      margin-bottom: 20px;
+    }
+
+    .color-label,
+    .size-label {
+      font-size: 13px;
+      margin: 10px 0;
+    }
+
+    .color-options,
+    .size-options {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .color-box {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #000;
+      cursor: pointer;
+    }
+
+    .color-box.active {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+
+    .size-box {
+      border: 1px solid black;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+
+    .size-box:hover,
+    .size-box.active {
+      background-color: #f4f4f4;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 240px;
+    }
+
+    .buttons button {
+      padding: 10px 0;
+      border: 1px solid black;
+      background-color: white;
+      cursor: pointer;
+      font-size: 14px;
+      color: black;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .buttons button:hover {
+      background-color: black;
+      color: white;
+    }
+
+    .product-description {
+      font-size: 13px;
+      color: #555;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+
+    .product-details {
+      font-size: 11px;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-transform: uppercase;
+      color: #444;
+    }
+
+    .hamburger {
+      display: none;
+      position: absolute;
+      top: 25px;
+      left: 20px;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .hamburger div {
+      width: 20px;
+      height: 2px;
+      background-color: #000;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      .product-image {
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .product-info {
+        padding-left: 0;
+      }
+
+      header {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        font-size: 13px;
+        text-align: center;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div>SEARCH</div>
+    <div>LOG IN</div>
+    <div>HELP</div>
+    <div>SHOPPING BAG [0]</div>
+  </header>
+
+  <div class="container">
+    <div class="product-image">
+      <img
+        id="main-product-image"
+        src="/Users/abhigyanborgohain/Downloads/85acac6e-89f5-4027-82fc-8a1aa6512c48.png"
+        alt="Black T-Shirt"
+      />
+    </div>
+    <div class="product-info">
+      <h1 class="product-title">RELAXED FIT FLOWING SHIRT</h1>
+      <div class="product-price">₹ 3,550.00</div>
+      <div class="tax-info">MRP INCL. OF ALL TAXES</div>
+
+      <div class="color-label">BLACK | 7545/400/800<br>Choose color</div>
+      <div class="color-options">
+        <div class="color-box active" style="background-color: black;" data-color="black"></div>
+        <div class="color-box" style="background-color: white;" data-color="white"></div>
+      </div>
+
+      <div class="size-label">Choose size</div>
+      <div class="size-options">
+        <div class="size-box">S</div>
+        <div class="size-box">M</div>
+        <div class="size-box">L</div>
+        <div class="size-box">XL</div>
+        <div class="size-box">2XL</div>
+      </div>
+
+      <div class="buttons">
+        <button>ADD</button>
+        <button>BUY NOW</button>
+      </div>
+
+      <div class="product-description">
+        Relaxed fit shirt made of a viscose blend. Camp collar and short sleeves. Featuring side vents at the hem and a button-up front.
+      </div>
+
+      <div class="product-details">
+        <div>PRODUCT MEASUREMENTS</div>
+        <div>COMPOSITION, CARE & ORIGIN</div>
+        <div>CHECK IN-STORE AVAILABILITY</div>
+        <div>SHIPPING, EXCHANGES AND RETURNS</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Color selection
+    const colorBoxes = document.querySelectorAll('.color-box');
+    const productImage = document.getElementById('main-product-image');
+
+    colorBoxes.forEach(box => {
+      box.addEventListener('click', () => {
+        colorBoxes.forEach(b => b.classList.remove('active'));
+        box.classList.add('active');
+
+        const selectedColor = box.getAttribute('data-color');
+
+        if (selectedColor === 'black') {
+          productImage.src = 'black front.png';
+          productImage.alt = 'Black T-Shirt';
+        } else if (selectedColor === 'white') {
+          productImage.src = 'white front.png';
+          productImage.alt = 'White T-Shirt';
+        }
+      });
+    });
+
+    // Size selection
+    const sizeBoxes = document.querySelectorAll('.size-box');
+    sizeBoxes.forEach(box => {
+      box.addEventListener('click', () => {
+        sizeBoxes.forEach(b => b.classList.remove('active'));
+        box.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
