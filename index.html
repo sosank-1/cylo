@@ -1,4 +1,167 @@
- <!-- Products Grid -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CYLO | Premium Fashion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #ffffff;
+            --accent-color: #f5f5f5;
+            --text-color: #222222;
+            --hover-color: #777777;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+        
+        .navbar {
+            transition: background-color 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            background-color: var(--secondary-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        
+        .hero-section {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 90vh;
+        }
+        
+        .product-card:hover .product-overlay {
+            opacity: 1;
+        }
+        
+        .newsletter-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                height: 70vh;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-section {
+                height: 60vh;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <!-- Top Navigation -->
+    <div class="bg-black text-white text-xs py-2 px-4 text-center"></div>
+
+    <!-- Main Navigation -->
+    <nav class="navbar fixed top-0 w-full z-50 bg-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Left Side -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Women</a>
+                    <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Men</a>
+                </div>
+
+                <!-- Center Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="text-2xl font-bold tracking-widest uppercase">CYLO</a>
+                </div>
+
+                <!-- Right Side -->
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-search"></i></a>
+                    <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-user"></i></a>
+                    <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-heart"></i></a>
+                    <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="menu-toggle" class="text-black focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 p-4">
+        <button id="menu-close" class="absolute top-4 right-4 text-black">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="mt-12 space-y-6">
+            <a href="#" class="block text-black uppercase text-sm font-medium py-2">Women</a>
+            <a href="#" class="block text-black uppercase text-sm font-medium py-2">Men</a>
+            <div class="border-t border-gray-200 pt-4 space-y-4">
+                <a href="#" class="block text-black py-2"><i class="fas fa-search mr-2"></i>Search</a>
+                <a href="#" class="block text-black py-2"><i class="fas fa-user mr-2"></i>Account</a>
+                <a href="#" class="block text-black py-2"><i class="fas fa-heart mr-2"></i>Wishlist</a>
+                <a href="#" class="block text-black py-2"><i class="fas fa-shopping-bag mr-2"></i>Bag</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section (Updated with black background) -->
+    <section class="hero-section flex items-center justify-center relative mt-20">
+        <!-- Black background replaces the image -->
+        <div class="absolute inset-0 bg-black"></div>
+
+        <!-- Overlay text -->
+        <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+            <div class="text-center text-white px-4">
+                <h1 class="text-4xl md:text-6xl font-light mb-4 uppercase tracking-wider">Summer Collection</h1>
+                <p class="text-lg md:text-xl mb-8 font-light max-w-2xl mx-auto">Elevate your wardrobe with CYLO's latest designs crafted from premium materials.</p>
+                <a href="#" class="border border-white text-white px-8 py-3 hover:bg-white hover:text-black transition duration-300 uppercase text-sm font-medium">Shop Now</a>
+            </div>
+        </div>
+        
+    </section>
+    <section>
+        <br>
+        <br>
+          <div class="text-center mb-16">
+            <h2 class="text-3xl font-light uppercase tracking-wider mb-4">Summer Essentials</h2>
+            <p class="max-w-2xl mx-auto text-gray-600">Discover our premium t-shirts and shorts for the season.</p>
+        </div>
+         <!-- Products Grid -->
     <section class="pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div class="product-grid grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
             <!-- T-Shirts -->
@@ -12,7 +175,7 @@
                 <div class="mt-4">
                     <h3 class="text-lg font-light mb-1">Premium Tee</h3>
                     <p class="text-gray-600 text-sm">Black, 100% Cotton</p>
-                    <p class="font-medium mt-1">$49.00</p>
+                    <p class="font-medium mt-1">Rs.499.00</p>
                 </div>
             </div>
             
@@ -26,7 +189,7 @@
                 <div class="mt-4">
                     <h3 class="text-lg font-light mb-1">Oversized Tee</h3>
                     <p class="text-gray-600 text-sm">White, Heavy Cotton</p>
-                    <p class="font-medium mt-1">$59.00</p>
+                    <p class="font-medium mt-1">Rs.599.00</p>
                 </div>
             </div>
             
@@ -41,7 +204,7 @@
                 <div class="mt-4">
                     <h3 class="text-lg font-light mb-1">Tailored Shorts</h3>
                     <p class="text-gray-600 text-sm">Black, Linen Blend</p>
-                    <p class="font-medium mt-1">$79.00</p>
+                    <p class="font-medium mt-1">Rs.799.00</p>
                 </div>
             </div>
             
@@ -55,7 +218,7 @@
                 <div class="mt-4">
                     <h3 class="text-lg font-light mb-1">Chino Shorts</h3>
                     <p class="text-gray-600 text-sm">Grey, Cotton Poplin</p>
-                    <p class="font-medium mt-1">$89.00</p>
+                    <p class="font-medium mt-1">Rs.899.00</p>
                 </div>
             </div>
         </div>
@@ -64,3 +227,108 @@
             <a href="#" class="border border-black text-black px-8 py-3 hover:bg-black hover:text-white transition duration-300 uppercase text-sm font-medium">View All Products</a>
         </div>
     </section>
+    
+    <!-- Editorial Section -->
+    <section class="bg-gray-100 py-16 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2982689f-d0c1-4027-b374-9e6578587836.png" alt="CYLO editorial shoot featuring models in natural light studio setting" class="w-full h-auto"/>
+                </div>
+                <div class="md:w-1/2 mt-6 md:mt-0">
+                    <h2 class="text-3xl font-light uppercase tracking-wider mb-6">The CYLO Edit</h2>
+                    <p class="text-gray-600 mb-6">At CYLO, we believe in timeless fashion that transcends seasons. Our designs blend contemporary aesthetics with enduring craftsmanship.</p>
+                    <p class="text-gray-600 mb-8">Each piece is thoughtfully designed to become a staple in your wardrobe, crafted from premium materials sourced responsibly.</p>
+                    <a href="#" class="border border-black text-black px-8 py-3 hover:bg-black hover:text-white transition duration-300 uppercase text-sm font-medium">Discover Our Story</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-light uppercase tracking-wider mb-4">Join CYLO</h2>
+            <p class="max-w-2xl mx-auto text-gray-600">Sign up for exclusive access to collections, events and promotions.</p>
+        </div>
+        
+        <div class="max-w-md mx-auto">
+            <form class="flex flex-col sm:flex-row gap-4">
+                <input type="email" placeholder="Your email address" class="newsletter-input flex-grow px-4 py-3 border border-gray-300 focus:border-black"/>
+                <button type="submit" class="bg-black text-white px-8 py-3 hover:bg-gray-800 transition duration-300 uppercase text-sm font-medium">Subscribe</button>
+            </form>
+            <p class="text-xs text-gray-500 mt-2 text-center">By subscribing, you agree to CYLO's Privacy Policy.</p>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-black text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-lg font-medium uppercase tracking-wider mb-4">CYLO</h3>
+                <p class="text-gray-400 text-sm">Premium fashion designed for the modern lifestyle.</p>
+            </div>
+            
+            <div>
+                <h4 class="text-sm font-medium uppercase tracking-wider mb-4">Shop</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white text-sm">Women</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white text-sm">Men</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white text-sm">Kids</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white text-sm">New Arrivals</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-sm font-medium uppercase tracking-wider mb-4">Help</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white text-sm">Customer Service</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white text-sm">Track Order</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white text-sm">Returns & Exchanges</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white text-sm">Shipping Info</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h4 class="text-sm font-medium uppercase tracking-wider mb-4">Connect</h4>
+                <div class="flex space-x-4 mb-4">
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-pinterest-p"></i></a>
+                </div>
+                <p class="text-gray-400 text-sm">© 2023 CYLO. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuClose = document.getElementById('menu-close');
+        
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+        
+        menuClose.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+        
+        // Navbar Scroll Effect
+        const navbar = document.querySelector('.navbar');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Product hover effect (already handled by CSS)
+    </script>
+</body>
+</html>
+  
