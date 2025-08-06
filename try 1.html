@@ -206,7 +206,7 @@
       />
     </div>
     <div class="product-info">
-      <h1 class="product-title">Men's Regular Fit Round Neck T-Shirt </h1>
+      <h1 id="product-title" class="product-title">Men's Regular Fit Round Neck T-Shirt</h1>
       <div class="product-price">₹ 399.00</div>
       <div class="tax-info">MRP INCL. OF ALL TAXES</div>
 
@@ -230,9 +230,8 @@
         <button>BUY NOW</button>
       </div>
 
-      <div class="product-description">
-      Regular fit light T-shirt with a round neck and short sleeves.
-
+      <div id="product-description" class="product-description">
+        Regular fit light black T-shirt with a round neck and short sleeves.
       </div>
 
       <div class="product-details">
@@ -242,13 +241,16 @@
   </div>
 
   <script>
-    // Color selection
     const colorBoxes = document.querySelectorAll('.color-box');
     const productImage = document.getElementById('main-product-image');
+    const productTitle = document.getElementById('product-title');
+    const productDescription = document.getElementById('product-description');
 
     colorBoxes.forEach(box => {
       box.addEventListener('click', () => {
+        // Remove active from all
         colorBoxes.forEach(b => b.classList.remove('active'));
+        // Add active to selected
         box.classList.add('active');
 
         const selectedColor = box.getAttribute('data-color');
@@ -256,9 +258,13 @@
         if (selectedColor === 'black') {
           productImage.src = 'black front.png';
           productImage.alt = 'Black T-Shirt';
+          productTitle.textContent = "Men's Regular Fit Black Round Neck T-Shirt";
+          productDescription.textContent = 'Regular fit light black T-shirt with a round neck and short sleeves.';
         } else if (selectedColor === 'white') {
           productImage.src = 'white front.png';
           productImage.alt = 'White T-Shirt';
+          productTitle.textContent = "Men's Regular Fit White Round Neck T-Shirt";
+          productDescription.textContent = 'Classic white T-shirt with breathable fabric, perfect for everyday comfort.';
         }
       });
     });
