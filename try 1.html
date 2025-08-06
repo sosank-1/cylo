@@ -244,26 +244,61 @@
   </div>
 
   <script>
+    <script>
     // Color selection
     const colorBoxes = document.querySelectorAll('.color-box');
     const productImage = document.getElementById('main-product-image');
 
+    // Set default to white T-shirt on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const defaultColorBox = document.querySelector('.color-box[data-color="white"]');
+      if (defaultColorBox) {
+        defaultColorBox.classList.add('active');
+      }
+      productImage.src = 'white front.png';
+      productImage.alt = 'white T-Shirt';
+    });
+
+    // Event listeners for color change
     colorBoxes.forEach(box => {
       box.addEventListener('click', () => {
+        // Remove active class from all boxes
         colorBoxes.forEach(b => b.classList.remove('active'));
+        // Add active to selected one
         box.classList.add('active');
 
+        // Change image based on selected color
         const selectedColor = box.getAttribute('data-color');
 
-        if (selectedColor === 'black') {
-          productImage.src = 'black front.png';
-          productImage.alt = 'Black T-Shirt';
-        } else if (selectedColor === 'white') {
+        if (selectedColor === 'white') {
           productImage.src = 'white front.png';
-          productImage.alt = 'White T-Shirt';
+          productImage.alt = 'white T-Shirt';
+        } else if (selectedColor === 'black') {
+          productImage.src = 'black front.png';
+          productImage.alt = 'black T-Shirt';
         }
       });
     });
+  //script Color selection
+   // const colorBoxes = document.querySelectorAll('.color-box');
+    //const productImage = document.getElementById('main-product-image');
+
+  //  colorBoxes.forEach(box => {
+    //  box.addEventListener('click', () => {
+       // colorBoxes.forEach(b => b.classList.remove('active'));
+      //  box.classList.add('active');
+
+       // const selectedColor = box.getAttribute('data-color');
+
+        //if (selectedColor === 'black') {
+       //   productImage.src = 'black front.png';
+     //     productImage.alt = 'Black T-Shirt';
+       // } else if (selectedColor === 'white') {
+       //   productImage.src = 'white front.png';
+     //     productImage.alt = 'White T-Shirt';
+       // }
+//      });
+  //  });
 
     // Size selection
     const sizeBoxes = document.querySelectorAll('.size-box');
