@@ -10,6 +10,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       font-weight: 400;
       color: #1a1a1a;
+      background-color: #fff;
     }
 
     header {
@@ -19,11 +20,34 @@
       padding: 20px 40px;
       font-size: 14px;
       border-bottom: 1px solid #eee;
+      position: relative;
+    }
+
+    .header-item {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: -12px;
+      background-color: #000;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
     }
 
     .container {
       display: flex;
       padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .product-image {
@@ -35,6 +59,7 @@
 
     .product-image img {
       max-width: 400px;
+      width: 100%;
       height: auto;
       transition: opacity 0.5s ease;
     }
@@ -48,7 +73,6 @@
       font-size: 18px;
       font-weight: 400;
       margin-bottom: 4px;
-      transition: opacity 0.5s ease;
     }
 
     .product-price {
@@ -118,9 +142,18 @@
       transition: background-color 0.3s, color 0.3s;
     }
 
+    .buttons button:first-child {
+      background-color: black;
+      color: white;
+    }
+
     .buttons button:hover {
       background-color: black;
       color: white;
+    }
+
+    .buttons button:first-child:hover {
+      background-color: #333;
     }
 
     .product-description {
@@ -128,7 +161,6 @@
       color: #555;
       margin-top: 20px;
       line-height: 1.5;
-      transition: opacity 0.5s ease;
     }
 
     .product-details {
@@ -185,9 +217,24 @@
       }
     }
 
-    /* Fade-in class */
-    .fade-in {
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #000;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
       opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
     }
   </style>
 </head>
@@ -199,18 +246,21 @@
       <div></div>
       <div></div>
     </div>
-    <div>SEARCH</div>
-    <div>LOG IN</div>
-    <div>HELP</div>
-    <div>SHOPPING BAG [0]</div>
+    <div class="header-item">SEARCH</div>
+    <div class="header-item">LOG IN</div>
+    <div class="header-item">HELP</div>
+    <div class="header-item shopping-bag">
+      SHOPPING BAG [<span id="cart-count">0</span>]
+      <div class="badge" id="cart-badge" style="display: none;"></div>
+    </div>
   </header>
 
   <div class="container">
     <div class="product-image">
       <img
         id="main-product-image"
-        src="black front.png"
-        alt="Black T-Shirt"
+        src="https://placehold.co/600x800/000000/FFFFFF/png?text=Black+T-Shirt"
+        alt="Black T-Shirt Front View - Men's regular fit cotton round neck t-shirt with short sleeves"
       />
     </div>
     <div class="product-info">
@@ -221,94 +271,188 @@
       <div class="color-label">BLACK | #000000<br>Choose color</div>
       <div class="color-options">
         <div class="color-box active" style="background-color: black;" data-color="black"></div>
-        <div class="color-box" style="background-color: white;" data-color="white"></div>
+        <div class="color-box" style="background-color: white; border-color: #ddd;" data-color="white"></div>
       </div>
 
       <div class="size-label">Choose size</div>
       <div class="size-options">
         <div class="size-box">S</div>
-        <div class="size-box">M</div>
+        <div class="size-box active">M</div>
         <div class="size-box">L</div>
         <div class="size-box">XL</div>
         <div class="size-box">2XL</div>
       </div>
 
       <div class="buttons">
-        <button>ADD TO CART</button>
-        <button>BUY NOW</button>
+        <button id="add-to-cart">ADD TO CART</button>
+        <button id="buy-now">BUY NOW</button>
       </div>
 
       <div id="product-description" class="product-description">
-        Regular fit light black T-shirt with a round neck and short sleeves.
+        Regular fit light black T-shirt with a round neck and short sleeves. Made from 100% premium cotton for comfortable all-day wear.
       </div>
 
       <div class="product-details">
         <div>SHIPPING, EXCHANGES AND RETURNS</div>
+        <div>COMPOSITION: 100% COTTON</div>
+        <div>PRODUCT CARE: MACHINE WASH COLD</div>
       </div>
     </div>
   </div>
 
+  <div class="toast" id="toast">Item added to cart</div>
+
   <script>
-  const colorBoxes = document.querySelectorAll('.color-box');
-  const productImage = document.getElementById('main-product-image');
-  const productTitle = document.getElementById('product-title');
-  const productDescription = document.getElementById('product-description');
-  const colorLabel = document.querySelector('.color-label');
+    // Initialize cart in localStorage if not exists
+    if (!localStorage.getItem('cart')) {
+      localStorage.setItem('cart', JSON.stringify([]));
+    }
 
-  // Utility function to fade in an element
-  function fadeIn(element, newContentCallback) {
-    element.style.opacity = 0;
-    setTimeout(() => {
-      newContentCallback(); // change the content
-      element.style.opacity = 1;
-    }, 200); // short delay for visual smoothness
-  }
+    // DOM elements
+    const colorBoxes = document.querySelectorAll('.color-box');
+    const sizeBoxes = document.querySelectorAll('.size-box');
+    const productImage = document.getElementById('main-product-image');
+    const productTitle = document.getElementById('product-title');
+    const productDescription = document.getElementById('product-description');
+    const colorLabel = document.querySelector('.color-label');
+    const addToCartBtn = document.getElementById('add-to-cart');
+    const buyNowBtn = document.getElementById('buy-now');
+    const cartCount = document.getElementById('cart-count');
+    const cartBadge = document.getElementById('cart-badge');
+    const toast = document.getElementById('toast');
 
-  colorBoxes.forEach(box => {
-    box.addEventListener('click', () => {
-      colorBoxes.forEach(b => b.classList.remove('active'));
-      box.classList.add('active');
+    // Product data
+    const product = {
+      id: 'tshirt-001',
+      name: "Men's Regular Fit Round Neck T-Shirt",
+      price: 399.00,
+      colors: {
+        black: {
+          name: "Black",
+          hex: "#000000",
+          description: "Regular fit light black T-shirt with a round neck and short sleeves. Made from 100% premium cotton for comfortable all-day wear.",
+          image: "https://placehold.co/600x800/000000/FFFFFF/png?text=Black+T-Shirt"
+        },
+        white: {
+          name: "White",
+          hex: "#FFFFFF",
+          description: "Classic white T-shirt with breathable fabric, perfect for everyday comfort and layering. Made from 100% premium cotton.",
+          image: "https://placehold.co/600x800/FFFFFF/000000/png?text=White+T-Shirt"
+        }
+      }
+    };
 
-      const selectedColor = box.getAttribute('data-color');
+    // Handle color selection
+    colorBoxes.forEach(box => {
+      box.addEventListener('click', () => {
+        colorBoxes.forEach(b => b.classList.remove('active'));
+        box.classList.add('active');
+        const selectedColor = box.getAttribute('data-color');
+        updateProductDisplay(selectedColor);
+      });
+    });
 
-      if (selectedColor === 'black') {
-        fadeIn(productImage, () => {
-          productImage.src = 'black front.png';
-          productImage.alt = 'Black T-Shirt';
-        });
-        fadeIn(productTitle, () => {
-          productTitle.textContent = "Men's Regular Fit Black Round Neck T-Shirt";
-        });
-        fadeIn(productDescription, () => {
-          productDescription.textContent = 'Regular fit light black T-shirt with a round neck and short sleeves.';
-        });
-        fadeIn(colorLabel, () => {
-          colorLabel.innerHTML = 'BLACK | #000000<br>Choose color';
-        });
-      } else if (selectedColor === 'white') {
-        fadeIn(productImage, () => {
-          productImage.src = 'white front.png';
-          productImage.alt = 'White T-Shirt';
-        });
-        fadeIn(productTitle, () => {
-          productTitle.textContent = "Men's Regular Fit White Round Neck T-Shirt";
-        });
-        fadeIn(productDescription, () => {
-          productDescription.textContent = 'Classic white T-shirt with breathable fabric, perfect for everyday comfort.';
-        });
-        fadeIn(colorLabel, () => {
-          colorLabel.innerHTML = 'WHITE | #FFFFFF<br>Choose color';
+    // Handle size selection
+    sizeBoxes.forEach(box => {
+      box.addEventListener('click', () => {
+        sizeBoxes.forEach(b => b.classList.remove('active'));
+        box.classList.add('active');
+      });
+    });
+
+    // Update product display based on selected color
+    function updateProductDisplay(color) {
+      const colorData = product.colors[color];
+      
+      // Fade out the image
+      productImage.style.opacity = 0;
+      
+      // Change the image source after a short delay
+      setTimeout(() => {
+        productImage.src = colorData.image;
+        productImage.alt = `${colorData.name} T-Shirt Front View - ${product.name}`;
+        
+        // Fade in the image
+        productImage.style.opacity = 1;
+      }, 300); // Match this delay with the fade-out duration
+     
+      productTitle.textContent = `${product.name} (${colorData.name})`;
+      productDescription.textContent = colorData.description;
+      colorLabel.innerHTML = `${colorData.name.toUpperCase()} | ${colorData.hex}<br>Choose color`;
+    }
+
+    // Get current cart items
+    function getCart() {
+      return JSON.parse(localStorage.getItem('cart'));
+    }
+
+    // Update cart count display
+    function updateCartCount() {
+      const cart = getCart();
+      const count = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCount.textContent = count;
+      
+      if (count > 0) {
+        cartBadge.textContent = count;
+        cartBadge.style.display = 'flex';
+      } else {
+        cartBadge.style.display = 'none';
+      }
+    }
+
+    // Add item to cart
+    function addToCart() {
+      const selectedColor = document.querySelector('.color-box.active').getAttribute('data-color');
+      const selectedSize = document.querySelector('.size-box.active').textContent;
+      const colorData = product.colors[selectedColor];
+      
+      const cart = getCart();
+      const existingItemIndex = cart.findIndex(item => 
+        item.productId === product.id && 
+        item.color === selectedColor && 
+        item.size === selectedSize
+      );
+
+      if (existingItemIndex !== -1) {
+        cart[existingItemIndex].quantity += 1;
+      } else {
+        cart.push({
+          productId: product.id,
+          name: product.name,
+          color: selectedColor,
+          size: selectedSize,
+          price: product.price,
+          image: colorData.image,
+          quantity: 1
         });
       }
-    });
-  });
 
-  // Size selection
-  const sizeBoxes = document.querySelectorAll('.size-box');
-  sizeBoxes.forEach(box => {
-    box.addEventListener('click', () => {
-      sizeBoxes.forEach(b => b.classList.remove('active'));
-      box.classList.add('active');
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      showToast();
+    }
+
+    // Show toast notification
+    function showToast() {
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Event listeners
+    addToCartBtn.addEventListener('click', addToCart);
+    buyNowBtn.addEventListener('click', () => {
+      addToCart();
+      // In a real application, this would redirect to checkout
+      alert('Proceeding to checkout with your selected items');
     });
-  });
-</script>
+
+    // Initialize cart count
+    updateCartCount();
+
+    // Set default color display
+    updateProductDisplay('black');
+  </script>
+</body>
+</html>
