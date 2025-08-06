@@ -36,6 +36,7 @@
     .product-image img {
       max-width: 400px;
       height: auto;
+      transition: opacity 0.5s ease;
     }
 
     .product-info {
@@ -47,6 +48,7 @@
       font-size: 18px;
       font-weight: 400;
       margin-bottom: 4px;
+      transition: opacity 0.5s ease;
     }
 
     .product-price {
@@ -126,6 +128,7 @@
       color: #555;
       margin-top: 20px;
       line-height: 1.5;
+      transition: opacity 0.5s ease;
     }
 
     .product-details {
@@ -180,6 +183,11 @@
       .hamburger {
         display: flex;
       }
+    }
+
+    /* Fade-in class */
+    .fade-in {
+      opacity: 0;
     }
   </style>
 </head>
@@ -246,25 +254,44 @@
     const productTitle = document.getElementById('product-title');
     const productDescription = document.getElementById('product-description');
 
+    // Utility function to fade in an element
+    function fadeIn(element, newContentCallback) {
+      element.style.opacity = 0;
+      setTimeout(() => {
+        newContentCallback(); // change the content
+        element.style.opacity = 1;
+      }, 200); // short delay for visual smoothness
+    }
+
     colorBoxes.forEach(box => {
       box.addEventListener('click', () => {
-        // Remove active from all
         colorBoxes.forEach(b => b.classList.remove('active'));
-        // Add active to selected
         box.classList.add('active');
 
         const selectedColor = box.getAttribute('data-color');
 
         if (selectedColor === 'black') {
-          productImage.src = 'black front.png';
-          productImage.alt = 'Black T-Shirt';
-          productTitle.textContent = "Men's Regular Fit Black Round Neck T-Shirt";
-          productDescription.textContent = 'Regular fit light black T-shirt with a round neck and short sleeves.';
+          fadeIn(productImage, () => {
+            productImage.src = 'black front.png';
+            productImage.alt = 'Black T-Shirt';
+          });
+          fadeIn(productTitle, () => {
+            productTitle.textContent = "Men's Regular Fit Black Round Neck T-Shirt";
+          });
+          fadeIn(productDescription, () => {
+            productDescription.textContent = 'Regular fit light black T-shirt with a round neck and short sleeves.';
+          });
         } else if (selectedColor === 'white') {
-          productImage.src = 'white front.png';
-          productImage.alt = 'White T-Shirt';
-          productTitle.textContent = "Men's Regular Fit White Round Neck T-Shirt";
-          productDescription.textContent = 'Classic white T-shirt with breathable fabric, perfect for everyday comfort.';
+          fadeIn(productImage, () => {
+            productImage.src = 'white front.png';
+            productImage.alt = 'White T-Shirt';
+          });
+          fadeIn(productTitle, () => {
+            productTitle.textContent = "Men's Regular Fit White Round Neck T-Shirt";
+          });
+          fadeIn(productDescription, () => {
+            productDescription.textContent = 'Classic white T-shirt with breathable fabric, perfect for everyday comfort.';
+          });
         }
       });
     });
