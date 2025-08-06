@@ -244,10 +244,7 @@
   </div>
 
   <script>
-    <script>
     // Color selection
-  
-  //script Color selection
     const colorBoxes = document.querySelectorAll('.color-box');
     const productImage = document.getElementById('main-product-image');
 
@@ -259,14 +256,14 @@
         const selectedColor = box.getAttribute('data-color');
 
         if (selectedColor === 'black') {
-         productImage.src = 'black front.png';
-         productImage.alt = 'Black T-Shirt';
-       } else if (selectedColor === 'white') {
+          productImage.src = 'black front.png';
+          productImage.alt = 'Black T-Shirt';
+        } else if (selectedColor === 'white') {
           productImage.src = 'white front.png';
-         productImage.alt = 'White T-Shirt';
-       }
-});
-  });
+          productImage.alt = 'White T-Shirt';
+        }
+      });
+    });
 
     // Size selection
     const sizeBoxes = document.querySelectorAll('.size-box');
