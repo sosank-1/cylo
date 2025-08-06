@@ -218,8 +218,7 @@
       <div class="product-price">₹ 399.00</div>
       <div class="tax-info">MRP INCL. OF ALL TAXES</div>
 
-     <div class="color-label"><span id="color-text">BLACK | #000000</span><br>Choose color</div>
-
+      <div class="color-label">BLACK | #000000<br>Choose color</div>
       <div class="color-options">
         <div class="color-box active" style="background-color: black;" data-color="black"></div>
         <div class="color-box" style="background-color: white;" data-color="white"></div>
@@ -244,71 +243,72 @@
       </div>
 
       <div class="product-details">
-
-        <div>FIT & MEASUREMENTS</div>
-        <div>FIBER CONTENT, MAINTENANCE & ORIGIN</div>
         <div>SHIPPING, EXCHANGES AND RETURNS</div>
-        
       </div>
     </div>
   </div>
+
   <script>
-    const colorBoxes = document.querySelectorAll('.color-box');
-    const productImage = document.getElementById('main-product-image');
-    const productTitle = document.getElementById('product-title');
-    const productDescription = document.getElementById('product-description');
+  const colorBoxes = document.querySelectorAll('.color-box');
+  const productImage = document.getElementById('main-product-image');
+  const productTitle = document.getElementById('product-title');
+  const productDescription = document.getElementById('product-description');
+  const colorLabel = document.querySelector('.color-label');
 
-    // Utility function to fade in an element
-    function fadeIn(element, newContentCallback) {
-      element.style.opacity = 0;
-      setTimeout(() => {
-        newContentCallback(); // change the content
-        element.style.opacity = 1;
-      }, 200); // short delay for visual smoothness
-    }
+  // Utility function to fade in an element
+  function fadeIn(element, newContentCallback) {
+    element.style.opacity = 0;
+    setTimeout(() => {
+      newContentCallback(); // change the content
+      element.style.opacity = 1;
+    }, 200); // short delay for visual smoothness
+  }
 
-    colorBoxes.forEach(box => {
-      box.addEventListener('click', () => {
-        colorBoxes.forEach(b => b.classList.remove('active'));
-        box.classList.add('active');
+  colorBoxes.forEach(box => {
+    box.addEventListener('click', () => {
+      colorBoxes.forEach(b => b.classList.remove('active'));
+      box.classList.add('active');
 
-        const selectedColor = box.getAttribute('data-color');
+      const selectedColor = box.getAttribute('data-color');
 
-        if (selectedColor === 'black') {
-          fadeIn(productImage, () => {
-            productImage.src = 'black front.png';
-            productImage.alt = 'Black T-Shirt';
-          });
-          fadeIn(productTitle, () => {
-            productTitle.textContent = "Men's Regular Fit T-Shirt";
-          });
-          fadeIn(productDescription, () => {
-            productDescription.textContent = 'Regular fit breathable, Lightweight black T-shirt with a round neck and short sleeves.';
-          });
-        } else if (selectedColor === 'white') {
-          fadeIn(productImage, () => {
-            productImage.src = 'white front.png';
-            productImage.alt = 'White T-Shirt';
-          });
-          fadeIn(productTitle, () => {
-            productTitle.textContent = "Men's Regular Fit T-Shirt";
-          });
-          fadeIn(productDescription, () => {
-            productDescription.textContent = 'Regular fit breathable, Lightweight white T-shirt with a round neck and short sleeves.';
-          });
-        }
-      });
+      if (selectedColor === 'black') {
+        fadeIn(productImage, () => {
+          productImage.src = 'black front.png';
+          productImage.alt = 'Black T-Shirt';
+        });
+        fadeIn(productTitle, () => {
+          productTitle.textContent = "Men's Regular Fit Black Round Neck T-Shirt";
+        });
+        fadeIn(productDescription, () => {
+          productDescription.textContent = 'Regular fit light black T-shirt with a round neck and short sleeves.';
+        });
+        fadeIn(colorLabel, () => {
+          colorLabel.innerHTML = 'BLACK | #000000<br>Choose color';
+        });
+      } else if (selectedColor === 'white') {
+        fadeIn(productImage, () => {
+          productImage.src = 'white front.png';
+          productImage.alt = 'White T-Shirt';
+        });
+        fadeIn(productTitle, () => {
+          productTitle.textContent = "Men's Regular Fit White Round Neck T-Shirt";
+        });
+        fadeIn(productDescription, () => {
+          productDescription.textContent = 'Classic white T-shirt with breathable fabric, perfect for everyday comfort.';
+        });
+        fadeIn(colorLabel, () => {
+          colorLabel.innerHTML = 'WHITE | #FFFFFF<br>Choose color';
+        });
+      }
     });
+  });
 
-    // Size selection
-    const sizeBoxes = document.querySelectorAll('.size-box');
-    sizeBoxes.forEach(box => {
-      box.addEventListener('click', () => {
-        sizeBoxes.forEach(b => b.classList.remove('active'));
-        box.classList.add('active');
-      });
+  // Size selection
+  const sizeBoxes = document.querySelectorAll('.size-box');
+  sizeBoxes.forEach(box => {
+    box.addEventListener('click', () => {
+      sizeBoxes.forEach(b => b.classList.remove('active'));
+      box.classList.add('active');
     });
-  </script>
-
-</body>
-</html>
+  });
+</script>
