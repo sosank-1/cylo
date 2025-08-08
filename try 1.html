@@ -202,12 +202,16 @@
       padding: 6px 14px;
       font-size: 13px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, color 0.3s ease;
       user-select: none;
     }
-    .size-box:hover,
+    .size-box:hover {
+      background-color: #f0f0f0;
+    }
     .size-box.active {
-      background-color: #f4f4f4;
+      background-color: #000;
+      color: white;
+      border-color: #000;
     }
     .buttons {
       display: flex;
@@ -325,7 +329,21 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .cart-item .item-details {
+      flex: 1;
+      margin-left: 10px;
+    }
+    .cart-item .item-name {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .cart-item .item-specs {
+      font-size: 12px;
+      color: #666;
     }
     .cart-item .quantity {
       display: flex;
@@ -337,6 +355,16 @@
       background: none;
       cursor: pointer;
       font-size: 16px;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.2s;
+    }
+    .cart-item button:hover {
+      background-color: #f4f4f4;
     }
     .proceed-btn {
       background-color: #008000 !important;
@@ -464,6 +492,7 @@
     if (!localStorage.getItem('cart')) {
       localStorage.setItem('cart', JSON.stringify([]));
     }
+    
     // DOM elements
     const colorBoxes = document.querySelectorAll('.color-box');
     const sizeBoxes = document.querySelectorAll('.size-box');
@@ -480,15 +509,18 @@
     const cartItemsContainer = document.getElementById('cart-items');
     const closeCartBtn = document.getElementById('close-cart');
     const proceedToPaymentBtn = document.getElementById('proceed-to-payment');
+    
     // Slider elements
     const sliderTrack = document.getElementById('slider-track');
     const sliderDots = document.getElementById('slider-dots');
     const thumbnailNav = document.getElementById('thumbnail-nav');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
+    
     // Slider state
     let currentSlide = 0;
     let currentImages = [];
+    
     // Product data with multiple images
     const product = {
       id: 'tshirt-001',
@@ -527,6 +559,7 @@
         }
       }
     };
+    
     // Initialize slider
     function initializeSlider(images) {
       currentImages = images;
@@ -561,6 +594,7 @@
       
       updateSlider();
     }
+    
     // Update slider position
     function updateSlider() {
       const translateX = -currentSlide * 100;
@@ -576,24 +610,29 @@
         thumb.classList.toggle('active', index === currentSlide);
       });
     }
+    
     // Go to specific slide
     function goToSlide(index) {
       currentSlide = index;
       updateSlider();
     }
+    
     // Next slide
     function nextSlide() {
       currentSlide = (currentSlide + 1) % currentImages.length;
       updateSlider();
     }
+    
     // Previous slide
     function prevSlide() {
       currentSlide = (currentSlide - 1 + currentImages.length) % currentImages.length;
       updateSlider();
     }
+    
     // Slider event listeners
     nextBtn.addEventListener('click', nextSlide);
     prevBtn.addEventListener('click', prevSlide);
+    
     // Auto-play slider (optional)
     let autoPlayInterval;
     function startAutoPlay() {
@@ -602,15 +641,18 @@
     function stopAutoPlay() {
       clearInterval(autoPlayInterval);
     }
+    
     // Pause auto-play on hover
     const sliderContainer = document.querySelector('.slider-container');
     sliderContainer.addEventListener('mouseenter', stopAutoPlay);
     sliderContainer.addEventListener('mouseleave', startAutoPlay);
+    
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') prevSlide();
       if (e.key === 'ArrowRight') nextSlide();
     });
+    
     // Handle color selection
     colorBoxes.forEach(box => {
       box.addEventListener('click', () => {
@@ -620,6 +662,7 @@
         updateProductDisplay(selectedColor);
       });
     });
+    
     // Handle size selection
     sizeBoxes.forEach(box => {
       box.addEventListener('click', () => {
@@ -627,6 +670,7 @@
         box.classList.add('active');
       });
     });
+    
     // Update product display based on selected color
     function updateProductDisplay(color) {
       const colorData = product.colors[color];
@@ -638,10 +682,12 @@
       productDescription.textContent = colorData.description;
       colorLabel.innerHTML = `${colorData.name.toUpperCase()} | ${colorData.hex}<br>Choose color`;
     }
+    
     // Get current cart items
     function getCart() {
       return JSON.parse(localStorage.getItem('cart'));
     }
+    
     // Update cart count display
     function updateCartCount() {
       const cart = getCart();
@@ -655,6 +701,7 @@
         cartBadge.style.display = 'none';
       }
     }
+    
     // Add item to cart
     function addToCart() {
       const selectedColor = document.querySelector('.color-box.active').getAttribute('data-color');
@@ -667,6 +714,7 @@
         item.color === selectedColor && 
         item.size === selectedSize
       );
+      
       if (existingItemIndex !== -1) {
         cart[existingItemIndex].quantity += 1;
       } else {
@@ -680,28 +728,38 @@
           quantity: 1
         });
       }
+      
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCount();
-      showToast();
+      
+      // Show detailed toast message
+      showToast(`${product.name} (${colorData.name}, Size: ${selectedSize}) added to cart`);
     }
+    
     // Show toast notification
-    function showToast() {
+    function showToast(message) {
+      toast.textContent = message;
       toast.classList.add('show');
       setTimeout(() => {
         toast.classList.remove('show');
       }, 3000);
     }
+    
     // Render cart items
     function renderCartItems() {
       const cart = getCart();
       cartItemsContainer.innerHTML = '';
       let subtotal = 0;
+      
       cart.forEach(item => {
         const cartItem = document.createElement('div');
         cartItem.className = 'cart-item';
         cartItem.innerHTML = `
           <img src="${item.image}" alt="${item.name}" style="width: 50px; height: auto;">
-          <div>${item.name} (${item.color})</div>
+          <div class="item-details">
+            <div class="item-name">${item.name}</div>
+            <div class="item-specs">Color: ${item.color} | Size: ${item.size}</div>
+          </div>
           <div class="quantity">
             <button class="decrease" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">-</button>
             <span>${item.quantity}</span>
@@ -714,6 +772,7 @@
       
       document.getElementById('cart-subtotal').textContent = `₹ ${subtotal.toFixed(2)}`;
     }
+    
     // Open/close cart
     shoppingBag.addEventListener('click', () => {
       cart.style.display = 'block';
@@ -723,6 +782,7 @@
       }, 10);
       renderCartItems();
     });
+    
     closeCartBtn.addEventListener('click', () => {
       cart.classList.remove('open');
       document.body.classList.remove('cart-open');
@@ -732,6 +792,7 @@
         }
       }, 400);
     });
+    
     // Proceed to payment
     proceedToPaymentBtn.addEventListener('click', () => {
       const cart = getCart();
@@ -741,6 +802,7 @@
         alert('Proceeding to payment with your selected items');
       }
     });
+    
     // Adjust quantity in cart
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('increase') || event.target.classList.contains('decrease')) {
@@ -749,6 +811,7 @@
         const size = event.target.getAttribute('data-size');
         const cart = getCart();
         const itemIndex = cart.findIndex(item => item.productId === productId && item.color === color && item.size === size);
+        
         if (event.target.classList.contains('increase')) {
           cart[itemIndex].quantity += 1;
         } else if (event.target.classList.contains('decrease')) {
@@ -758,17 +821,20 @@
             cart.splice(itemIndex, 1);
           }
         }
+        
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartCount();
         renderCartItems();
       }
     });
+    
     // Event listeners
     addToCartBtn.addEventListener('click', addToCart);
     buyNowBtn.addEventListener('click', () => {
       addToCart();
       alert('Proceeding to checkout with your selected items');
     });
+    
     // Initialize
     updateCartCount();
     updateProductDisplay('black');
