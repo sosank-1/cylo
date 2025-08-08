@@ -373,6 +373,21 @@
     .proceed-btn:hover {
       background-color: #006400 !important;
     }
+    .clear-cart-btn {
+      background-color: #950606 !important;
+      margin-top: 10px !important;
+    }
+    .clear-cart-btn:hover {
+      background-color: #7a0505 !important;
+    }
+    .empty-cart-message {
+      text-align: center;
+      padding: 20px 0;
+      color: #1a1a1a;
+      font-size: 14px;
+      font-weight: 400;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
     @media (max-width: 768px) {
       .container {
         flex-direction: column;
@@ -478,12 +493,14 @@
   <div class="cart" id="cart">
     <h2>Your Cart</h2>
     <div id="cart-items"></div>
+    <div id="empty-cart-message" class="empty-cart-message" style="display: none;">Your cart is empty</div>
     <div style="border-top: 1px solid #eee; padding: 15px 0; margin-top: 20px;">
       <div style="display: flex; justify-content: space-between; font-weight: bold;">
         <span>SUBTOTAL:</span>
         <span id="cart-subtotal">₹ 0.00</span>
       </div>
     </div>
+    <button id="clear-cart" class="clear-cart-btn" style="padding: 10px 0; width: 100%; color: white; border: none; cursor: pointer; font-size: 14px; margin-top: 10px;">CLEAR CART</button>
     <button id="close-cart" style="padding: 10px 0; width: 100%; background-color: black; color: white; border: none; cursor: pointer; font-size: 14px; margin: 20px 0 10px 0;">CLOSE</button>
     <button id="proceed-to-payment" class="proceed-btn" style="padding: 12px 0; width: 100%; color: white; border: none; cursor: pointer; font-size: 14px; font-weight: bold; margin-top: auto; margin-bottom: 20px;">PROCEED TO PAYMENT</button>
   </div>
@@ -507,8 +524,10 @@
     const shoppingBag = document.getElementById('shopping-bag');
     const cart = document.getElementById('cart');
     const cartItemsContainer = document.getElementById('cart-items');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
     const closeCartBtn = document.getElementById('close-cart');
     const proceedToPaymentBtn = document.getElementById('proceed-to-payment');
+    const clearCartBtn = document.getElementById('clear-cart');
     
     // Slider elements
     const sliderTrack = document.getElementById('slider-track');
@@ -751,24 +770,35 @@
       cartItemsContainer.innerHTML = '';
       let subtotal = 0;
       
-      cart.forEach(item => {
-        const cartItem = document.createElement('div');
-        cartItem.className = 'cart-item';
-        cartItem.innerHTML = `
-          <img src="${item.image}" alt="${item.name}" style="width: 50px; height: auto;">
-          <div class="item-details">
-            <div class="item-name">${item.name}</div>
-            <div class="item-specs">Color: ${item.color} | Size: ${item.size}</div>
-          </div>
-          <div class="quantity">
-            <button class="decrease" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">-</button>
-            <span>${item.quantity}</span>
-            <button class="increase" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">+</button>
-          </div>
-        `;
-        cartItemsContainer.appendChild(cartItem);
-        subtotal += item.price * item.quantity;
-      });
+      if (cart.length === 0) {
+        // Show empty cart message
+        emptyCartMessage.style.display = 'block';
+        clearCartBtn.style.display = 'none';
+      } else {
+        // Hide empty cart message
+        emptyCartMessage.style.display = 'none';
+        clearCartBtn.style.display = 'block';
+        
+        // Render cart items
+        cart.forEach(item => {
+          const cartItem = document.createElement('div');
+          cartItem.className = 'cart-item';
+          cartItem.innerHTML = `
+            <img src="${item.image}" alt="${item.name}" style="width: 50px; height: auto;">
+            <div class="item-details">
+              <div class="item-name">${item.name}</div>
+              <div class="item-specs">Color: ${item.color} | Size: ${item.size}</div>
+            </div>
+            <div class="quantity">
+              <button class="decrease" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">-</button>
+              <span>${item.quantity}</span>
+              <button class="increase" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">+</button>
+            </div>
+          `;
+          cartItemsContainer.appendChild(cartItem);
+          subtotal += item.price * item.quantity;
+        });
+      }
       
       document.getElementById('cart-subtotal').textContent = `₹ ${subtotal.toFixed(2)}`;
     }
@@ -791,6 +821,21 @@
           cart.style.display = 'none';
         }
       }, 400);
+    });
+    
+    // Clear cart functionality
+    clearCartBtn.addEventListener('click', () => {
+      // Clear cart in localStorage
+      localStorage.setItem('cart', JSON.stringify([]));
+      
+      // Update cart count display
+      updateCartCount();
+      
+      // Re-render cart items (which will now be empty)
+      renderCartItems();
+      
+      // Show confirmation message
+      showToast('Your cart has been cleared');
     });
     
     // Proceed to payment
