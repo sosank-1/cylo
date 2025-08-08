@@ -53,15 +53,127 @@
     .product-image {
       flex: 1;
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .product-image img {
-      max-width: 400px;
+    /* Image Slider Styles */
+    .image-slider {
+      position: relative;
       width: 100%;
-      height: auto;
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .slider-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       transition: opacity 0.2s ease;
+    }
+
+    .slider-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+      z-index: 10;
+    }
+
+    .slider-nav:hover {
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .slider-nav.prev {
+      left: 10px;
+    }
+
+    .slider-nav.next {
+      right: 10px;
+    }
+
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #ddd;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .dot.active {
+      background-color: #000;
+    }
+
+    /* Thumbnail Navigation */
+    .thumbnail-nav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 400px;
+    }
+
+    .thumbnail {
+      width: 60px;
+      height: 60px;
+      border: 2px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+
+    .thumbnail.active {
+      border-color: #000;
+    }
+
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .product-info {
@@ -294,6 +406,14 @@
         padding-left: 0;
       }
 
+      .slider-container {
+        height: 400px;
+      }
+
+      .thumbnail-nav {
+        max-width: 100%;
+      }
+
       header {
         justify-content: center;
         flex-wrap: wrap;
@@ -327,11 +447,21 @@
 
   <div class="container">
     <div class="product-image">
-      <img
-        id="main-product-image"
-        src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7c557012-f328-46ed-885a-c790ce19be85.png"
-        alt="Black T-Shirt Front View - Men's regular fit cotton round neck t-shirt with short sleeves"
-      />
+      <div class="image-slider">
+        <div class="slider-container">
+          <div class="slider-track" id="slider-track">
+            <!-- Slides will be dynamically generated -->
+          </div>
+          <button class="slider-nav prev" id="prev-btn">‹</button>
+          <button class="slider-nav next" id="next-btn">›</button>
+        </div>
+        <div class="slider-dots" id="slider-dots">
+          <!-- Dots will be dynamically generated -->
+        </div>
+      </div>
+      <div class="thumbnail-nav" id="thumbnail-nav">
+        <!-- Thumbnails will be dynamically generated -->
+      </div>
     </div>
     <div class="product-info">
       <h1 id="product-title" class="product-title">Men's Regular Fit T-Shirt</h1>
@@ -395,7 +525,6 @@
     // DOM elements
     const colorBoxes = document.querySelectorAll('.color-box');
     const sizeBoxes = document.querySelectorAll('.size-box');
-    const productImage = document.getElementById('main-product-image');
     const productTitle = document.getElementById('product-title');
     const productDescription = document.getElementById('product-description');
     const colorLabel = document.querySelector('.color-label');
@@ -410,7 +539,18 @@
     const closeCartBtn = document.getElementById('close-cart');
     const proceedToPaymentBtn = document.getElementById('proceed-to-payment');
 
-    // Product data
+    // Slider elements
+    const sliderTrack = document.getElementById('slider-track');
+    const sliderDots = document.getElementById('slider-dots');
+    const thumbnailNav = document.getElementById('thumbnail-nav');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    // Slider state
+    let currentSlide = 0;
+    let currentImages = [];
+
+    // Product data with multiple images
     const product = {
       id: 'tshirt-001',
       name: "Men's Regular Fit T-Shirt",
@@ -420,16 +560,130 @@
           name: "Black",
           hex: "#000000",
           description: "Regular fit light black T-shirt with a round neck and short sleeves. Made from 100% premium cotton for comfortable all-day wear.",
-          image: "black front.png"
+          images: [
+            {
+              url: "black front.png",
+              alt: "Black T-Shirt Front View"
+            },
+            {
+              url: "black back",
+              alt: "Black T-Shirt Back View"
+            },
+            
+          ]
         },
         white: {
           name: "White",
           hex: "#FFFFFF",
           description: "Classic white T-shirt with breathable fabric, perfect for everyday comfort and layering. Made from 100% premium cotton.",
-          image: "white front.png"
+          images: [
+            {
+              url: "white front.png",
+              alt: "White T-Shirt FrontView"
+            },
+            {
+              url: "white back.png",
+              alt: "White T-Shirt Back View"
+            },
+            
+          ]
         }
       }
     };
+
+    // Initialize slider
+    function initializeSlider(images) {
+      currentImages = images;
+      currentSlide = 0;
+      
+      // Clear existing content
+      sliderTrack.innerHTML = '';
+      sliderDots.innerHTML = '';
+      thumbnailNav.innerHTML = '';
+      
+      // Create slides
+      images.forEach((image, index) => {
+        // Create slide
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+        slide.innerHTML = `<img src="${image.url}" alt="${image.alt}" loading="lazy">`;
+        sliderTrack.appendChild(slide);
+        
+        // Create dot
+        const dot = document.createElement('div');
+        dot.className = `dot ${index === 0 ? 'active' : ''}`;
+        dot.addEventListener('click', () => goToSlide(index));
+        sliderDots.appendChild(dot);
+        
+        // Create thumbnail
+        const thumbnail = document.createElement('div');
+        thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+        thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" loading="lazy">`;
+        thumbnail.addEventListener('click', () => goToSlide(index));
+        thumbnailNav.appendChild(thumbnail);
+      });
+      
+      updateSlider();
+    }
+
+    // Update slider position
+    function updateSlider() {
+      const translateX = -currentSlide * 100;
+      sliderTrack.style.transform = `translateX(${translateX}%)`;
+      
+      // Update dots
+      document.querySelectorAll('.dot').forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+      
+      // Update thumbnails
+      document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+        thumb.classList.toggle('active', index === currentSlide);
+      });
+    }
+
+    // Go to specific slide
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlider();
+    }
+
+    // Next slide
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % currentImages.length;
+      updateSlider();
+    }
+
+    // Previous slide
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + currentImages.length) % currentImages.length;
+      updateSlider();
+    }
+
+    // Slider event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    // Auto-play slider (optional)
+    let autoPlayInterval;
+    function startAutoPlay() {
+      autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    }
+
+    function stopAutoPlay() {
+      clearInterval(autoPlayInterval);
+    }
+
+    // Pause auto-play on hover
+    const sliderContainer = document.querySelector('.slider-container');
+    sliderContainer.addEventListener('mouseenter', stopAutoPlay);
+    sliderContainer.addEventListener('mouseleave', startAutoPlay);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    });
 
     // Handle color selection
     colorBoxes.forEach(box => {
@@ -453,19 +707,10 @@
     function updateProductDisplay(color) {
       const colorData = product.colors[color];
       
-      // Fade out the image
-      productImage.style.opacity = 0;
+      // Update slider with new images
+      initializeSlider(colorData.images);
       
-      // Change the image source after a short delay
-      setTimeout(() => {
-        productImage.src = colorData.image;
-        productImage.alt = `${colorData.name} T-Shirt Front View - ${product.name}`;
-        
-        // Fade in the image
-        productImage.style.opacity = 1;
-      }, 300); // Match this delay with the fade-out duration
-     
-      productTitle.textContent = product.name; // Removed color from title
+      productTitle.textContent = product.name;
       productDescription.textContent = colorData.description;
       colorLabel.innerHTML = `${colorData.name.toUpperCase()} | ${colorData.hex}<br>Choose color`;
     }
@@ -511,7 +756,7 @@
           color: selectedColor,
           size: selectedSize,
           price: product.price,
-          image: colorData.image,
+          image: colorData.images[0].url,
           quantity: 1
         });
       }
@@ -532,7 +777,7 @@
     // Render cart items
     function renderCartItems() {
       const cart = getCart();
-      cartItemsContainer.innerHTML = ''; // Clear previous items
+      cartItemsContainer.innerHTML = '';
       let subtotal = 0;
       cart.forEach(item => {
         const cartItem = document.createElement('div');
@@ -579,7 +824,6 @@
       if (cart.length === 0) {
         alert('Your cart is empty. Please add items to proceed to payment.');
       } else {
-        // In a real application, this would redirect to checkout
         alert('Proceeding to payment with your selected items');
       }
     });
@@ -599,13 +843,13 @@
           if (cart[itemIndex].quantity > 1) {
             cart[itemIndex].quantity -= 1;
           } else {
-            cart.splice(itemIndex, 1); // Remove item if quantity is 0
+            cart.splice(itemIndex, 1);
           }
         }
 
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartCount();
-        renderCartItems(); // Re-render cart items
+        renderCartItems();
       }
     });
 
@@ -613,16 +857,13 @@
     addToCartBtn.addEventListener('click', addToCart);
     buyNowBtn.addEventListener('click', () => {
       addToCart();
-      // In a real application, this would redirect to checkout
       alert('Proceeding to checkout with your selected items');
     });
 
-    // Initialize cart count
+    // Initialize
     updateCartCount();
-
-    // Set default color display
     updateProductDisplay('black');
+    startAutoPlay();
   </script>
 </body>
 </html>
-
