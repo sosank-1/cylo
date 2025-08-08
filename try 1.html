@@ -42,7 +42,7 @@
     .container {
       display: flex;
       padding: 40px;
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
     }
     .product-image {
@@ -55,14 +55,13 @@
     .image-slider {
       position: relative;
       width: 100%;
-      max-width: 1024px;
+      max-width: 500px;
       margin-bottom: 20px;
     }
     .slider-container {
       position: relative;
       width: 100%;
-      height: 1024px;
-      max-width: 1024px;
+      height: 500px;
       overflow: hidden;
       border-radius: 8px;
     }
@@ -82,7 +81,7 @@
     .slide img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       transition: opacity 0.2s ease;
     }
     .slider-nav {
@@ -136,11 +135,11 @@
       gap: 10px;
       justify-content: center;
       flex-wrap: wrap;
-      max-width: 1024px;
+      max-width: 500px;
     }
     .thumbnail {
-      width: 120px;
-      height: 120px;
+      width: 80px;
+      height: 80px;
       border: 2px solid transparent;
       border-radius: 4px;
       cursor: pointer;
@@ -356,7 +355,6 @@
       }
       .slider-container {
         height: 300px;
-        max-width: 300px;
       }
       .thumbnail-nav {
         max-width: 100%;
@@ -374,16 +372,6 @@
       }
       .hamburger {
         display: flex;
-      }
-    }
-    @media (max-width: 1200px) {
-      .slider-container {
-        height: 600px;
-        max-width: 600px;
-      }
-      .thumbnail {
-        width: 80px;
-        height: 80px;
       }
     }
   </style>
@@ -508,14 +496,13 @@
           description: "Regular fit light black T-shirt with a round neck and short sleeves. Made from 100% premium cotton for comfortable all-day wear.",
           images: [
             {
-              url: "black front.png",
+              url: "https://example.com/black-front-1024x1024.jpg", // Replace with your 1024x1024 image URL
               alt: "Black T-Shirt Front View"
             },
             {
-              url: "black back.png",
+              url: "https://example.com/black-back-1024x1024.jpg", // Replace with your 1024x1024 image URL
               alt: "Black T-Shirt Back View"
             },
-            
           ]
         },
         white: {
@@ -524,14 +511,13 @@
           description: "Classic white T-shirt with breathable fabric, perfect for everyday comfort and layering. Made from 100% premium cotton.",
           images: [
             {
-              url: "white front.png",
-              alt: "White T-Shirt FrontView"
+              url: "https://example.com/white-front-1024x1024.jpg", // Replace with your 1024x1024 image URL
+              alt: "White T-Shirt Front View"
             },
             {
-              url: "white back.png",
+              url: "https://example.com/white-back-1024x1024.jpg", // Replace with your 1024x1024 image URL
               alt: "White T-Shirt Back View"
             },
-            
           ]
         }
       }
