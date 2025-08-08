@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToneMatch - AI-Powered T-Shirt Color Suggestions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --primary-white: #ffffff;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #a0a0a0;
+            --accent: #d32f2f;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-black);
+            background-color: var(--primary-white);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        
+        .tagline {
+            font-size: 14px;
+            font-weight: 300;
+            text-align: center;
+            color: var(--dark-gray);
+            margin-top: 5px;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+        
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--dark-gray);
+        }
+        
+        .options-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+        
+        .option-card {
+            width: 320px;
+            background: var(--primary-white);
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .option-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+        }
+        
+        .option-card.active {
+            border-color: var(--primary-black);
+        }
+        
+        .option-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: var(--light-gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+        
+        .option-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .option-desc {
+            font-size: 14px;
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            background: var(--primary-black);
+            color: var(--primary-white);
+            border: none;
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 2px;
+        }
+        
+        .btn:hover {
+            background: #333;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary-black);
+            color: var(--primary-black);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary-black);
+            color: var(--primary-white);
+        }
+        
+        .content-section {
+            display: none;
+            padding: 40px 0;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .camera-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            border-radius: 4px;
+            overflow: hidden;
+            background: var(--light-gray);
+            aspect-ratio: 3/4;
+        }
+        
+        #video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .video-overlay.hidden {
+            display: none;
+        }
+        
+        .capturing {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .capturing.active {
+            display: block;
+        }
+        
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 40px 0;
+        }
+        
+        .skin-tone {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .skin-tone:hover {
+            transform: scale(1.1);
+        }
+        
+        .skin-tone.selected {
+            border-color: var(--primary-black);
+            box-shadow: 0 0 0 2px white, 0 0 0 4px var(--primary-black);
+        }
+        
+        .results-container {
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .detected-skin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .detected-color {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            border: 1px solid var(--medium-gray);
+        }
+        
+        .detected-label {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .suggestions-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .tshirt-colors {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .tshirt-color {
+            width: 120px;
+            height: 180px;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .tshirt-color:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .tshirt-color-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.9);
+            padding: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid var(--light-gray);
+            border-top: 4px solid var(--primary-black);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            color: var(--accent);
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .error-message.active {
+            display: block;
+        }
+        
+        .color-info {
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--dark-gray);
+            font-style: italic;
+        }
+        
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            font-size: 14px;
+            color: var(--dark-gray);
+            border-top: 1px solid var(--medium-gray);
+            margin-top: 60px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .options-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .option-card {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .tshirt-color {
+                width: 100px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">TONEMATCH</div>
+            <div class="tagline">AI-Powered T-Shirt Color Suggestions</div>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Find Your Perfect T-Shirt Colors</h1>
+            <p>Our AI analyzes your skin tone to recommend t-shirt colors that complement your natural features</p>
+        </div>
+    </section>
+    
+    <div class="container">
+        <div class="options-container">
+            <div class="option-card active" id="camera-option">
+                <div class="option-icon">📷</div>
+                <h3 class="option-title">Use Your Camera</h3>
+                <p class="option-desc">Let our AI detect your skin tone from your face</p>
+                <button class="btn" id="start-camera-btn">Start Camera</button>
+            </div>
+            
+            <div class="option-card" id="palette-option">
+                <div class="option-icon">🎨</div>
+                <h3 class="option-title">Skin Tone Palette</h3>
+                <p class="option-desc">Select your skin tone from our palette</p>
+                <button class="btn btn-outline" id="show-palette-btn">Show Palette</button>
+            </div>
+        </div>
+        
+        <div class="content-section active" id="camera-section">
+            <div class="camera-container">
+                <div class="video-container">
+                    <video id="video" autoplay muted playsinline></video>
+                    <div class="video-overlay" id="video-overlay">
+                        Camera will appear here
+                    </div>
+                    <div class="capturing" id="capturing">Analyzing...</div>
+                </div>
+                <button class="btn" id="capture-btn" style="display: none;">Capture & Analyze</button>
+                <div class="error-message" id="camera-error"></div>
+            </div>
+        </div>
+        
+        <div class="content-section" id="palette-section">
+            <div class="color-palette">
+                <div class="skin-tone" style="background-color: #FDBCB4;" data-color="#FDBCB4"></div>
+                <div class="skin-tone" style="background-color: #F1C27D;" data-color="#F1C27D"></div>
+                <div class="skin-tone" style="background-color: #E0AC69;" data-color="#E0AC69"></div>
+                <div class="skin-tone" style="background-color: #C68642;" data-color="#C68642"></div>
+                <div class="skin-tone" style="background-color: #8D5524;" data-color="#8D5524"></div>
+                <div class="skin-tone" style="background-color: #5C4033;" data-color="#5C4033"></div>
+                <div class="skin-tone" style="background-color: #3C2415;" data-color="#3C2415"></div>
+            </div>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Analyzing your skin tone...</p>
+        </div>
+        
+        <div class="results-container" id="results" style="display: none;">
+            <div class="detected-skin">
+                <div class="detected-color" id="detected-color"></div>
+                <div class="detected-label">Your Detected Skin Tone</div>
+            </div>
+            
+            <h2 class="suggestions-title">Recommended T-Shirt Colors</h2>
+            <div class="tshirt-colors" id="tshirt-colors">
+                <!-- T-shirt colors will be inserted here -->
+            </div>
+            <div class="color-info" id="color-info"></div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2023 ToneMatch. All rights reserved. AI-powered fashion recommendations.</p>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const cameraOption = document.getElementById('camera-option');
+        const paletteOption = document.getElementById('palette-option');
+        const cameraSection = document.getElementById('camera-section');
+        const paletteSection = document.getElementById('palette-section');
+        const startCameraBtn = document.getElementById('start-camera-btn');
+        const showPaletteBtn = document.getElementById('show-palette-btn');
+        const video = document.getElementById('video');
+        const videoOverlay = document.getElementById('video-overlay');
+        const captureBtn = document.getElementById('capture-btn');
+        const capturing = document.getElementById('capturing');
+        const loading = document.getElementById('loading');
+        const results = document.getElementById('results');
+        const detectedColor = document.getElementById('detected-color');
+        const tshirtColors = document.getElementById('tshirt-colors');
+        const skinTones = document.querySelectorAll('.skin-tone');
+        const cameraError = document.getElementById('camera-error');
+        const colorInfo = document.getElementById('color-info');
+        
+        // State
+        let stream = null;
+        let selectedSkinTone = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set up option card switching
+            cameraOption.addEventListener('click', () => {
+                switchToCamera();
+            });
+            
+            paletteOption.addEventListener('click', () => {
+                switchToPalette();
+            });
+            
+            // Set up camera functionality
+            startCameraBtn.addEventListener('click', startCamera);
+            captureBtn.addEventListener('click', captureAndAnalyze);
+            
+            // Set up palette functionality
+            showPaletteBtn.addEventListener('click', () => {
+                switchToPalette();
+            });
+            
+            skinTones.forEach(tone => {
+                tone.addEventListener('click', () => {
+                    selectSkinTone(tone);
+                });
+            });
+        });
+        
+        function switchToCamera() {
+            cameraOption.classList.add('active');
+            paletteOption.classList.remove('active');
+            cameraSection.classList.add('active');
+            paletteSection.classList.remove('active');
+            cameraError.classList.remove('active');
+        }
+        
+        function switchToPalette() {
+            paletteOption.classList.add('active');
+            cameraOption.classList.remove('active');
+            paletteSection.classList.add('active');
+            cameraSection.classList.remove('active');
+            
+            // Stop camera if running
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+                videoOverlay.classList.remove('hidden');
+                captureBtn.style.display = 'none';
+            }
+        }
+        
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    } 
+                });
+                
+                video.srcObject = stream;
+                videoOverlay.classList.add('hidden');
+                captureBtn.style.display = 'block';
+                cameraError.classList.remove('active');
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                cameraError.textContent = 'Could not access the camera. Please check permissions and try again.';
+                cameraError.classList.add('active');
+            }
+        }
+        
+        function captureAndAnalyze() {
+            capturing.classList.add('active');
+            loading.classList.add('active');
+            results.style.display = 'none';
+            cameraError.classList.remove('active');
+            
+            try {
+                // Create a canvas to capture the video frame
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas dimensions to match video
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                
+                // Draw the current video frame to the canvas
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Get image data
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                
+                // Extract skin tone using a simplified approach
+                const skinTone = extractSkinToneFromImage(data, canvas.width, canvas.height);
+                
+                // Get color recommendations
+                const recommendations = getColorRecommendations(skinTone);
+                
+                // Display results
+                displayResults(skinTone, recommendations);
+                
+            } catch (error) {
+                console.error('Error during analysis:', error);
+                cameraError.textContent = 'Error analyzing image. Please try again or use the skin tone palette option.';
+                cameraError.classList.add('active');
+            } finally {
+                capturing.classList.remove('active');
+                loading.classList.remove('active');
+            }
+        }
+        
+        function extractSkinToneFromImage(data, width, height) {
+            // This is a simplified skin tone extraction algorithm
+            // We'll sample pixels from the center region of the image (assuming face is centered)
+            const centerX = Math.floor(width / 2);
+            const centerY = Math.floor(height / 2);
+            const sampleRadius = Math.min(width, height) * 0.15; // Sample within 15% of the smaller dimension
+            
+            let r = 0, g = 0, b = 0;
+            let count = 0;
+            
+            // Sample pixels in a circular region around the center
+            for (let y = centerY - sampleRadius; y < centerY + sampleRadius; y += 5) {
+                for (let x = centerX - sampleRadius; x < centerX + sampleRadius; x += 5) {
+                    // Skip pixels outside the circle
+                    const distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+                    if (distance > sampleRadius) continue;
+                    
+                    // Get pixel index
+                    const idx = (y * width + x) * 4;
+                    
+                    // Skip very bright or very dark pixels (likely not skin)
+                    const brightness = (data[idx] + data[idx + 1] + data[idx + 2]) / 3;
+                    if (brightness < 40 || brightness > 220) continue;
+                    
+                    // Simple skin color filter (adjust thresholds as needed)
+                    const red = data[idx];
+                    const green = data[idx + 1];
+                    const blue = data[idx + 2];
+                    
+                    // Check if pixel is likely skin tone
+                    if (red > green && green > blue && 
+                        red > 95 && green > 40 && blue > 20 &&
+                        (Math.max(red, green, blue) - Math.min(red, green, blue)) > 15) {
+                        r += red;
+                        g += green;
+                        b += blue;
+                        count++;
+                    }
+                }
+            }
+            
+            // If we didn't find enough skin pixels, use a fallback
+            if (count < 50) {
+                // Use a default skin tone (medium)
+                return '#E0AC69';
+            }
+            
+            // Calculate average color
+            r = Math.floor(r / count);
+            g = Math.floor(g / count);
+            b = Math.floor(b / count);
+            
+            // Convert to hex
+            return rgbToHex(r, g, b);
+        }
+        
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+        
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+        
+        function rgbToHsl(r, g, b) {
+            r /= 255;
+            g /= 255;
+            b /= 255;
+            
+            const max = Math.max(r, g, b);
+            const min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            
+            if (max === min) {
+                h = s = 0; // achromatic
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+            
+            return {
+                h: Math.round(h * 360),
+                s: Math.round(s * 100),
+                l: Math.round(l * 100)
+            };
+        }
+        
+        function hslToHex(h, s, l) {
+            h /= 360;
+            s /= 100;
+            l /= 100;
+            
+            let r, g, b;
+            
+            if (s === 0) {
+                r = g = b = l; // achromatic
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            
+            const toHex = x => {
+                const hex = Math.round(x * 255).toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            };
+            
+            return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+        }
+        
+        function getColorRecommendations(skinToneHex) {
+            // Convert skin tone to RGB
+            const skinRgb = hexToRgb(skinToneHex);
+            
+            // Convert to HSL for easier manipulation
+            const skinHsl = rgbToHsl(skinRgb.r, skinRgb.g, skinRgb.b);
+            
+            // Determine skin tone category based on lightness
+            let skinCategory;
+            if (skinHsl.l > 70) {
+                skinCategory = 'light';
+            } else if (skinHsl.l > 50) {
+                skinCategory = 'medium-light';
+            } else if (skinHsl.l > 30) {
+                skinCategory = 'medium-dark';
+            } else {
+                skinCategory = 'dark';
+            }
+            
+            // Generate complementary colors
+            const complementaryHue = (skinHsl.h + 180) % 360;
+            
+            // Generate analogous colors (30 degrees away)
+            const analogousHue1 = (skinHsl.h + 30) % 360;
+            const analogousHue2 = (skinHsl.h + 330) % 360; // Same as -30
+            
+            // Generate triadic colors (120 degrees apart)
+            const triadicHue1 = (skinHsl.h + 120) % 360;
+            const triadicHue2 = (skinHsl.h + 240) % 360;
+            
+            // Create color palette based on skin tone
+            const recommendations = [];
+            
+            // Add complementary color with adjusted saturation and lightness
+            recommendations.push({
+                name: 'Complementary Blue',
+                color: hslToHex(complementaryHue, 70, 50)
+            });
+            
+            // Add analogous colors
+            recommendations.push({
+                name: 'Warm Green',
+                color: hslToHex(analogousHue1, 60, 50)
+            });
+            
+            // Add triadic colors
+            recommendations.push({
+                name: 'Vibrant Purple',
+                color: hslToHex(triadicHue1, 75, 55)
+            });
+            
+            // Add neutral colors that work with all skin tones
+            recommendations.push({
+                name: 'Classic White',
+                color: '#FFFFFF'
+            });
+            
+            // Add a color based on skin tone category
+            if (skinCategory === 'light') {
+                recommendations.push({
+                    name: 'Soft Coral',
+                    color: hslToHex(15, 70, 70)
+                });
+            } else if (skinCategory === 'medium-light') {
+                recommendations.push({
+                    name: 'Ocean Teal',
+                    color: hslToHex(180, 60, 45)
+                });
+            } else if (skinCategory === 'medium-dark') {
+                recommendations.push({
+                    name: 'Earth Orange',
+                    color: hslToHex(30, 80, 50)
+                });
+            } else {
+                recommendations.push({
+                    name: 'Jewel Emerald',
+                    color: hslToHex(150, 80, 40)
+                });
+            }
+            
+            return recommendations;
+        }
+        
+        function displayResults(skinTone, recommendations) {
+            // Display detected skin tone
+            detectedColor.style.backgroundColor = skinTone;
+            
+            // Display recommended t-shirt colors
+            tshirtColors.innerHTML = '';
+            
+            recommendations.forEach(rec => {
+                const colorDiv = document.createElement('div');
+                colorDiv.className = 'tshirt-color';
+                colorDiv.style.backgroundColor = rec.color;
+                
+                const colorName = document.createElement('div');
+                colorName.className = 'tshirt-color-name';
+                colorName.textContent = rec.name;
+                
+                colorDiv.appendChild(colorName);
+                tshirtColors.appendChild(colorDiv);
+                
+                // Add click event to show color info
+                colorDiv.addEventListener('click', () => {
+                    showColorInfo(rec.name, rec.color);
+                });
+            });
+            
+            // Show results
+            results.style.display = 'block';
+            
+            // Show color category info
+            const skinRgb = hexToRgb(skinTone);
+            const skinHsl = rgbToHsl(skinRgb.r, skinRgb.g, skinRgb.b);
+            
+            let skinCategory;
+            if (skinHsl.l > 70) {
+                skinCategory = 'Light';
+            } else if (skinHsl.l > 50) {
+                skinCategory = 'Medium-Light';
+            } else if (skinHsl.l > 30) {
+                skinCategory = 'Medium-Dark';
+            } else {
+                skinCategory = 'Dark';
+            }
+            
+            colorInfo.textContent = `Your skin tone is categorized as ${skinCategory}. Colors that complement your undertone have been selected.`;
+        }
+        
+        function showColorInfo(colorName, colorHex) {
+            colorInfo.textContent = `${colorName} (${colorHex}) - This color complements your skin tone by creating a balanced contrast.`;
+        }
+        
+        function selectSkinTone(toneElement) {
+            // Remove previous selection
+            skinTones.forEach(t => t.classList.remove('selected'));
+            
+            // Add selection to clicked tone
+            toneElement.classList.add('selected');
+            
+            // Get the color
+            selectedSkinTone = toneElement.dataset.color;
+            
+            // Get recommendations
+            const recommendations = getColorRecommendations(selectedSkinTone);
+            
+            // Display results
+            displayResults(selectedSkinTone, recommendations);
+        }
+    </script>
+</body>
+</html>
