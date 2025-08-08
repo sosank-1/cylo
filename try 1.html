@@ -50,19 +50,20 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      max-width: 400px;
     }
     /* Image Slider Styles */
     .image-slider {
       position: relative;
       width: 100%;
-      max-width: 1024px;
+      max-width: 400px;
       margin-bottom: 20px;
     }
     .slider-container {
       position: relative;
       width: 100%;
-      height: 1024px;
-      max-width: 1024px;
+      height: 400px;
+      max-width: 400px;
       overflow: hidden;
       border-radius: 8px;
     }
@@ -82,7 +83,7 @@
     .slide img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       transition: opacity 0.2s ease;
     }
     .slider-nav {
@@ -136,11 +137,11 @@
       gap: 10px;
       justify-content: center;
       flex-wrap: wrap;
-      max-width: 1024px;
+      max-width: 400px;
     }
     .thumbnail {
-      width: 120px;
-      height: 120px;
+      width: 60px;
+      height: 60px;
       border: 2px solid transparent;
       border-radius: 4px;
       cursor: pointer;
@@ -199,12 +200,15 @@
       padding: 6px 14px;
       font-size: 13px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, color 0.3s ease;
       user-select: none;
     }
-    .size-box:hover,
-    .size-box.active {
+    .size-box:hover {
       background-color: #f4f4f4;
+    }
+    .size-box.active {
+      background-color: black;
+      color: white;
     }
     .buttons {
       display: flex;
@@ -320,9 +324,36 @@
     }
     .cart-item {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .cart-item-header {
+      display: flex;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+    }
+    .cart-item-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+    .cart-item-info {
+      flex: 1;
+    }
+    .cart-item-name {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .cart-item-details {
+      font-size: 12px;
+      color: #666;
+    }
+    .cart-item-price {
+      font-weight: 500;
+      margin-bottom: 8px;
     }
     .cart-item .quantity {
       display: flex;
@@ -330,17 +361,39 @@
       gap: 5px;
     }
     .cart-item button {
-      border: none;
-      background: none;
+      border: 1px solid #ddd;
+      background: white;
       cursor: pointer;
       font-size: 16px;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .proceed-btn {
       background-color: #008000 !important;
-      margin-top: 10px !important;
+      color: white !important;
+      border: none !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+      margin-top: auto !important;
+      margin-bottom: 20px !important;
     }
     .proceed-btn:hover {
       background-color: #006400 !important;
+    }
+    .clear-cart-btn {
+      background-color: #950606 !important;
+      color: white !important;
+      border: none !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+      margin-top: 10px !important;
+    }
+    .clear-cart-btn:hover {
+      background-color: #700505 !important;
     }
     @media (max-width: 768px) {
       .container {
@@ -350,6 +403,7 @@
       .product-image {
         justify-content: center;
         margin-bottom: 20px;
+        max-width: 100%;
       }
       .product-info {
         padding-left: 0;
@@ -362,8 +416,8 @@
         max-width: 100%;
       }
       .thumbnail {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
       }
       header {
         justify-content: center;
@@ -377,13 +431,19 @@
       }
     }
     @media (max-width: 1200px) {
+      .product-image {
+        max-width: 350px;
+      }
       .slider-container {
-        height: 600px;
-        max-width: 600px;
+        height: 350px;
+        max-width: 350px;
       }
       .thumbnail {
-        width: 80px;
-        height: 80px;
+        width: 50px;
+        height: 50px;
+      }
+      .thumbnail-nav {
+        max-width: 350px;
       }
     }
   </style>
@@ -463,8 +523,9 @@
         <span id="cart-subtotal">₹ 0.00</span>
       </div>
     </div>
-    <button id="close-cart" style="padding: 10px 0; width: 100%; background-color: black; color: white; border: none; cursor: pointer; font-size: 14px; margin: 20px 0 10px 0;">CLOSE</button>
-    <button id="proceed-to-payment" class="proceed-btn" style="padding: 12px 0; width: 100%; color: white; border: none; cursor: pointer; font-size: 14px; font-weight: bold; margin-top: auto; margin-bottom: 20px;">PROCEED TO PAYMENT</button>
+    <button id="clear-cart" class="clear-cart-btn" style="padding: 10px 0; width: 100%;">CLEAR CART</button>
+    <button id="close-cart" style="padding: 10px 0; width: 100%; background-color: black; color: white; border: none; cursor: pointer; font-size: 14px; margin: 10px 0;">CLOSE</button>
+    <button id="proceed-to-payment" class="proceed-btn" style="padding: 10px 0; width: 100%;">PROCEED TO PAYMENT</button>
   </div>
   <script>
     // Initialize cart in localStorage if not exists
@@ -486,6 +547,7 @@
     const cart = document.getElementById('cart');
     const cartItemsContainer = document.getElementById('cart-items');
     const closeCartBtn = document.getElementById('close-cart');
+    const clearCartBtn = document.getElementById('clear-cart');
     const proceedToPaymentBtn = document.getElementById('proceed-to-payment');
     // Slider elements
     const sliderTrack = document.getElementById('slider-track');
@@ -683,6 +745,7 @@
           productId: product.id,
           name: product.name,
           color: selectedColor,
+          colorName: colorData.name,
           size: selectedSize,
           price: product.price,
           image: colorData.images[0].url,
@@ -694,32 +757,51 @@
       showToast();
     }
     // Show toast notification
-    function showToast() {
+    function showToast(message = "Item added to cart") {
+      toast.textContent = message;
       toast.classList.add('show');
       setTimeout(() => {
         toast.classList.remove('show');
       }, 3000);
+    }
+    // Clear cart
+    function clearCart() {
+      localStorage.setItem('cart', JSON.stringify([]));
+      updateCartCount();
+      renderCartItems();
+      showToast("Cart cleared successfully");
     }
     // Render cart items
     function renderCartItems() {
       const cart = getCart();
       cartItemsContainer.innerHTML = '';
       let subtotal = 0;
-      cart.forEach(item => {
-        const cartItem = document.createElement('div');
-        cartItem.className = 'cart-item';
-        cartItem.innerHTML = `
-          <img src="${item.image}" alt="${item.name}" style="width: 50px; height: auto;">
-          <div>${item.name} (${item.color})</div>
-          <div class="quantity">
-            <button class="decrease" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">-</button>
-            <span>${item.quantity}</span>
-            <button class="increase" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">+</button>
-          </div>
-        `;
-        cartItemsContainer.appendChild(cartItem);
-        subtotal += item.price * item.quantity;
-      });
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div style="text-align: center; padding: 20px 0; color: #666;">Your cart is empty</div>';
+      } else {
+        cart.forEach(item => {
+          const cartItem = document.createElement('div');
+          cartItem.className = 'cart-item';
+          cartItem.innerHTML = `
+            <div class="cart-item-header">
+              <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+              <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-details">Color: ${item.colorName} | Size: ${item.size}</div>
+                <div class="cart-item-price">₹ ${item.price.toFixed(2)}</div>
+              </div>
+            </div>
+            <div class="quantity">
+              <button class="decrease" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">-</button>
+              <span>${item.quantity}</span>
+              <button class="increase" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">+</button>
+            </div>
+          `;
+          cartItemsContainer.appendChild(cartItem);
+          subtotal += item.price * item.quantity;
+        });
+      }
       
       document.getElementById('cart-subtotal').textContent = `₹ ${subtotal.toFixed(2)}`;
     }
@@ -740,6 +822,12 @@
           cart.style.display = 'none';
         }
       }, 400);
+    });
+    // Clear cart button
+    clearCartBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to clear your cart?')) {
+        clearCart();
+      }
     });
     // Proceed to payment
     proceedToPaymentBtn.addEventListener('click', () => {
