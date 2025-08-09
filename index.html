@@ -45,6 +45,7 @@
             height: 90vh;
         }
         
+        /* Updated product overlay positioning */
         .product-card:hover .product-overlay {
             opacity: 1;
         }
@@ -134,17 +135,17 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <!-- Left Side -->
-                <div class="hidden md:flex items-center space-x-6">
+                <div class="hidden md:flex items-center space-x-8">
                     <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Men</a>
                     <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Women</a>
                     <a href="try 2.html" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Style advisor</a>
                 </div>
                 <!-- Center Logo -->
-                <div class="flex-shrink-0 flex items-center">
+                <div class="absolute left-1/2 transform -translate-x-1/2">
                     <a href="index..html" class="text-2xl font-bold tracking-widest uppercase">CYLO</a>
                 </div>
                 <!-- Right Side -->
-                <div class="hidden md:flex items-center space-x-6">
+                <div class="hidden md:flex items-center space-x-6 ml-auto">
                     <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-search"></i></a>
                     <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-user"></i></a>
                     <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-heart"></i></a>
@@ -214,6 +215,12 @@
                         <img src="black front.png" 
                              alt="CYLO Basic Black T-shirt with crew neckline, front view"
                              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+                        <div class="product-overlay absolute inset-0 flex items-end justify-center pb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <button class="bg-black text-white px-6 py-3 text-sm font-medium uppercase pointer-events-auto" 
+                                    aria-label="Add Men's Regular Fit Round Neck T-Shirt to cart">
+                                Add To Cart
+                            </button>
+                        </div>
                     </div>
                     <div class="mt-4">
                         <h3 class="text-lg font-light mb-1">Men's Regular Fit T-Shirt</h3>
@@ -221,12 +228,6 @@
                         <p class="font-medium mt-1">Rs.399.00</p>
                     </div>
                 </a>
-                <div class="product-overlay absolute inset-0 flex items-start justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <button class="bg-black text-white px-6 py-3 text-sm font-medium uppercase pointer-events-auto" 
-                            aria-label="Add Men's Regular Fit Round Neck T-Shirt to cart">
-                        Add To Cart
-                    </button>
-                </div>
             </div>
             <!-- Product 3: Shorts -->
             <div class="product-card relative group">
@@ -235,6 +236,12 @@
                         <img src="nikker.jpeg" 
                              alt="CYLO Men's Regular Fit Shorts, front view"
                              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+                        <div class="product-overlay absolute inset-0 flex items-end justify-center pb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <button class="bg-black text-white px-6 py-3 text-sm font-medium uppercase pointer-events-auto" 
+                                    aria-label="Add Men's Regular Fit Shorts to cart">
+                                Add To Cart
+                            </button>
+                        </div>
                     </div>
                     <div class="mt-4">
                         <h3 class="text-lg font-light mb-1">Men's Regular Fit Shorts</h3>
@@ -242,12 +249,6 @@
                         <p class="font-medium mt-1">Rs.399.00</p>
                     </div>
                 </a>
-                <div class="product-overlay absolute inset-0 flex items-start justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <button class="bg-black text-white px-6 py-3 text-sm font-medium uppercase pointer-events-auto" 
-                            aria-label="Add Men's Regular Fit Shorts to cart">
-                        Add To Cart
-                    </button>
-                </div>
             </div>
             <!-- Product 4: Additional Product -->
             <div class="product-card relative group">
@@ -256,6 +257,12 @@
                         <img src="polo neck.png" 
                              alt="CYLO Basic Grey T-shirt with crew neckline, front view"
                              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"/>
+                        <div class="product-overlay absolute inset-0 flex items-end justify-center pb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                            <button class="bg-black text-white px-6 py-3 text-sm font-medium uppercase pointer-events-auto" 
+                                    aria-label="Add Men's Regular Fit Round Neck T-Shirt to cart">
+                                Add To Cart
+                            </button>
+                        </div>
                     </div>
                     <div class="mt-4">
                         <h3 class="text-lg font-light mb-1"> Men's Regular Fit Polo T-Shirt</h3>
@@ -263,12 +270,6 @@
                         <p class="font-medium mt-1">Rs.399.00</p>
                     </div>
                 </a>
-                <div class="product-overlay absolute inset-0 flex items-start justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                    <button class="bg-black text-white px-6 py-3 text-sm font-medium uppercase pointer-events-auto" 
-                            aria-label="Add Men's Regular Fit Round Neck T-Shirt to cart">
-                        Add To Cart
-                    </button>
-                </div>
             </div>
         </div>
     </section>
