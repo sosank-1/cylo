@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -63,24 +63,42 @@
             transform: translateX(0);
         }
         
+        /* Background blur overlay - NEW ADDITION */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 40;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
         /* Fade-in animation styles */
         .fade-in-element {
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.6s ease-out, transform 0.6s ease-out;
         }
-
         .fade-in-element.is-visible {
             opacity: 1;
             transform: translateY(0);
         }
-
         /* Custom style for bigger font in Editorial Section */
         .editorial-title {
             font-size: 3.5rem; /* Adjust as needed, Tailwind's text-5xl is 3rem */
             line-height: 1;
         }
-
         @media (max-width: 768px) {
             .hero-section {
                 height: 70vh;
@@ -109,10 +127,8 @@
     </style>
 </head>
 <body class="bg-white">
-
     <!-- Top Navigation -->
     <div class="bg-black text-white text-xs py-2 px-4 text-center"></div>
-
     <!-- Main Navigation -->
     <nav class="navbar fixed top-0 w-full z-50 bg-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -123,12 +139,10 @@
                     <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Women</a>
                     <a href="try 2.html" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Style advisor</a>
                 </div>
-
                 <!-- Center Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="index..html" class="text-2xl font-bold tracking-widest uppercase">CYLO</a>
                 </div>
-
                 <!-- Right Side -->
                 <div class="hidden md:flex items-center space-x-6">
                     <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-search"></i></a>
@@ -136,7 +150,6 @@
                     <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-heart"></i></a>
                     <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-shopping-bag"></i></a>
                 </div>
-
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
                     <button id="menu-toggle" class="text-black focus:outline-none">
@@ -146,7 +159,10 @@
             </div>
         </div>
     </nav>
-
+    
+    <!-- Background Blur Overlay - NEW ADDITION -->
+    <div id="menu-overlay" class="menu-overlay"></div>
+    
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 p-4">
         <button id="menu-close" class="absolute top-4 right-4 text-black">
@@ -164,12 +180,10 @@
             </div>
         </div>
     </div>
-
     <!-- Hero Section (Updated with black background) -->
     <section class="hero-section flex items-center justify-center relative mt-20">
         <!-- Black background replaces the image -->
         <div class="absolute inset-0 bg-black"></div>
-
         <!-- Overlay text -->
         <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
             <div class="text-center text-white px-4">
@@ -212,7 +226,6 @@
                     </button>
                 </div>
             </div>
-
             <!-- Product 3: Shorts -->
             <div class="product-card relative group">
                 <a href="try 1.html" class="block">
@@ -234,7 +247,6 @@
                     </button>
                 </div>
             </div>
-
             <!-- Product 4: Additional Product -->
             <div class="product-card relative group">
                 <a href="try 1.html" class="block">
@@ -256,7 +268,6 @@
                     </button>
                 </div>
             </div>
-
         </div>
     </section>
     <!-- Editorial Section -->
@@ -332,17 +343,29 @@
     </footer>
     
     <script>
-        // Mobile Menu Toggle
+        // Mobile Menu Toggle with Background Blur
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuClose = document.getElementById('menu-close');
+        const menuOverlay = document.getElementById('menu-overlay');
         
         menuToggle.addEventListener('click', () => {
             mobileMenu.classList.add('active');
+            menuOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent body scrolling
         });
         
         menuClose.addEventListener('click', () => {
             mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = ''; // Restore body scrolling
+        });
+        
+        // Close menu when clicking on the overlay
+        menuOverlay.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         });
         
         // Navbar Scroll Effect
@@ -357,17 +380,14 @@
         });
         
         // Product hover effect (already handled by CSS)
-
         // Fade-in on scroll
         document.addEventListener('DOMContentLoaded', () => {
             const fadeInElements = document.querySelectorAll('.fade-in-element');
-
             const observerOptions = {
                 root: null, // viewport
                 rootMargin: '0px',
                 threshold: 0.1 // 10% of the element must be visible
             };
-
             const observer = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -376,7 +396,6 @@
                     }
                 });
             }, observerOptions);
-
             fadeInElements.forEach(element => {
                 observer.observe(element);
             });
