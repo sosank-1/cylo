@@ -63,14 +63,14 @@
             transform: translateX(0);
         }
         
-        /* Background blur overlay - NEW ADDITION */
+        /* Background blur overlay */
         .menu-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.2); /* Reduced opacity from 0.5 to 0.2 */
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             z-index: 40;
@@ -160,7 +160,7 @@
         </div>
     </nav>
     
-    <!-- Background Blur Overlay - NEW ADDITION -->
+    <!-- Background Blur Overlay -->
     <div id="menu-overlay" class="menu-overlay"></div>
     
     <!-- Mobile Menu -->
