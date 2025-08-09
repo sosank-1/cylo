@@ -319,6 +319,7 @@
     body.cart-open::before {
       opacity: 1;
       backdrop-filter: blur(2px);
+      pointer-events: all; /* Enable pointer events for the backdrop */
     }
     .cart-item {
       display: flex;
@@ -869,6 +870,24 @@
       addToCart();
       alert('Proceeding to checkout with your selected items');
     });
+    
+    // Close cart when clicking on the backdrop
+    document.body.addEventListener('click', function(event) {
+      // Check if cart is open
+      if (document.body.classList.contains('cart-open')) {
+        // Check if click is outside the cart and not on the shopping bag
+        if (!cart.contains(event.target) && !shoppingBag.contains(event.target)) {
+          cart.classList.remove('open');
+          document.body.classList.remove('cart-open');
+          setTimeout(() => {
+            if (!cart.classList.contains('open')) {
+              cart.style.display = 'none';
+            }
+          }, 400);
+        }
+      }
+    });
+    
     // Initialize
     updateCartCount();
     updateProductDisplay('black');
