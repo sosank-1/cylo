@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Men's Regular Fit T-Shirt</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-weight: 400;
+      color: #1a1a1a;
+      background-color: #fff;
+    }
+    header {
+      display: flex;
+      justify-content: flex-end;
+      gap: 40px;
+      padding: 20px 40px;
+      font-size: 14px;
+      border-bottom: 1px solid #eee;
+      position: relative;
+    }
+    .header-item {
+      cursor: pointer;
+      position: relative;
+    }
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: -12px;
+      background-color: #000;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+    .container {
+      display: flex;
+      padding: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .product-image {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 400px;
+    }
+    /* Image Slider Styles */
+    .image-slider {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      max-width: 400px;
+      overflow: hidden;
+    }
+    .slider-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+    .slide {
+      min-width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: opacity 0.2s ease;
+    }
+    .slider-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+      z-index: 10;
+    }
+    .slider-nav:hover {
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .slider-nav.prev {
+      left: 10px;
+    }
+    .slider-nav.next {
+      right: 10px;
+    }
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 15px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #ddd;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .dot.active {
+      background-color: #000;
+    }
+    /* Thumbnail Navigation */
+    .thumbnail-nav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 400px;
+    }
+    .thumbnail {
+      width: 60px;
+      height: 60px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+    .thumbnail.active {
+      border-color: #000;
+    }
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .product-info {
+      flex: 1;
+      padding-left: 60px;
+    }
+    .product-title {
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .product-price {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    .tax-info {
+      font-size: 11px;
+      color: gray;
+      margin-bottom: 20px;
+    }
+    .color-label,
+    .size-label {
+      font-size: 13px;
+      margin: 10px 0;
+    }
+    .color-options,
+    .size-options {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .color-box {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #000;
+      cursor: pointer;
+    }
+    .color-box.active {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+    .size-box {
+      border: 1px solid black;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+    .size-box:hover {
+      background-color: #f4f4f4;
+    }
+    .size-box.active {
+      background-color: black;
+      color: white;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 240px;
+    }
+    .buttons button {
+      padding: 10px 0;
+      border: 1px solid black;
+      background-color: white;
+      cursor: pointer;
+      font-size: 14px;
+      color: black;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .buttons button:first-child {
+      background-color: black;
+      color: white;
+    }
+    .buttons button:hover {
+      background-color: black;
+      color: white;
+    }
+    .buttons button:first-child:hover {
+      background-color: #333;
+    }
+    .product-description {
+      font-size: 13px;
+      color: #555;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+    .product-details {
+      font-size: 11px;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-transform: uppercase;
+      color: #444;
+    }
+    .hamburger {
+      display: none;
+      position: absolute;
+      top: 25px;
+      left: 20px;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+    }
+    .hamburger div {
+      width: 20px;
+      height: 2px;
+      background-color: #000;
+    }
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #000;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+    /* Sliding cart styles */
+    .cart {
+      position: fixed;
+      right: -320px;
+      top: 0;
+      width: 300px;
+      height: 100%;
+      background-color: white;
+      box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
+      transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      padding: 20px;
+      z-index: 1001;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .cart.open {
+      right: 0;
+      transform: translateX(0);
+    }
+    
+    body.cart-open::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    
+    body.cart-open::before {
+      opacity: 1;
+      backdrop-filter: blur(2px);
+      pointer-events: all; /* Enable pointer events for the backdrop */
+    }
+    .cart-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .cart-item-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .cart-item-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+    .cart-item-info {
+      flex: 1;
+    }
+    .cart-item-name {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .cart-item-details {
+      font-size: 12px;
+      color: #666;
+    }
+    .cart-item-price {
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .cart-item .quantity {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .cart-item button {
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+      font-size: 16px;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .proceed-btn {
+      background-color: #008000 !important;
+      color: white !important;
+      border: none !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+      margin-top: auto !important;
+      margin-bottom: 20px !important;
+    }
+    .proceed-btn:hover {
+      background-color: #006400 !important;
+    }
+    .clear-cart-btn {
+      background-color: #950606 !important;
+      color: white !important;
+      border: none !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+      margin-top: 10px !important;
+    }
+    .clear-cart-btn:hover {
+      background-color: #700505 !important;
+    }
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 20px;
+      }
+      .product-image {
+        justify-content: center;
+        margin-bottom: 20px;
+        max-width: 100%;
+      }
+      .product-info {
+        padding-left: 0;
+      }
+      .slider-container {
+        height: 300px;
+        max-width: 300px;
+      }
+      .thumbnail-nav {
+        max-width: 100%;
+      }
+      .thumbnail {
+        width: 50px;
+        height: 50px;
+      }
+      header {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        font-size: 13px;
+        text-align: center;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+    @media (max-width: 1200px) {
+      .product-image {
+        max-width: 350px;
+      }
+      .slider-container {
+        height: 350px;
+        max-width: 350px;
+      }
+      .thumbnail {
+        width: 50px;
+        height: 50px;
+      }
+      .thumbnail-nav {
+        max-width: 350px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="header-item">SEARCH</div>
+    <div class="header-item">LOG IN</div>
+    <div class="header-item">HELP</div>
+    <div class="header-item shopping-bag" id="shopping-bag">
+      SHOPPING BAG [<span id="cart-count">0</span>]
+      <div class="badge" id="cart-badge" style="display: none;"></div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="product-image">
+      <div class="image-slider">
+        <div class="slider-container">
+          <div class="slider-track" id="slider-track">
+            <!-- Slides will be dynamically generated -->
+          </div>
+          <button class="slider-nav prev" id="prev-btn">‹</button>
+          <button class="slider-nav next" id="next-btn">›</button>
+        </div>
+        <div class="slider-dots" id="slider-dots">
+          <!-- Dots will be dynamically generated -->
+        </div>
+      </div>
+      <div class="thumbnail-nav" id="thumbnail-nav">
+        <!-- Thumbnails will be dynamically generated -->
+      </div>
+    </div>
+    <div class="product-info">
+      <h1 id="product-title" class="product-title">Men's Regular Fit T-Shirt</h1>
+      <div class="product-price">₹ 399.00</div>
+      <div class="tax-info">MRP INCL. OF ALL TAXES</div>
+      <div class="color-label">BLACK | #000000<br>Choose color</div>
+      <div class="color-options">
+        <div class="color-box active" style="background-color: black;" data-color="black"></div>
+        <div class="color-box" style="background-color: white; border-color: #ddd;" data-color="white"></div>
+      </div>
+      <div class="size-label">Choose size</div>
+      <div class="size-options">
+        <div class="size-box">S</div>
+        <div class="size-box active">M</div>
+        <div class="size-box">L</div>
+        <div class="size-box">XL</div>
+        <div class="size-box">2XL</div>
+      </div>
+      <div class="buttons">
+        <button id="add-to-cart">ADD TO CART</button>
+        <button id="buy-now">BUY NOW</button>
+      </div>
+      <div id="product-description" class="product-description">
+        Regular fit light black T-shirt with a round neck and short sleeves. Made from 100% premium cotton for comfortable all-day wear.
+      </div>
+      <div class="product-details">
+        <div>SHIPPING, EXCHANGES AND RETURNS</div>
+        <div>COMPOSITION: 100% COTTON</div>
+        <div>PRODUCT CARE: MACHINE WASH COLD</div>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast">Item added to cart</div>
+  <!-- Sliding cart -->
+  <div class="cart" id="cart">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <div style="border-top: 1px solid #eee; padding: 15px 0; margin-top: 20px;">
+      <div style="display: flex; justify-content: space-between; font-weight: bold;">
+        <span>SUBTOTAL:</span>
+        <span id="cart-subtotal">₹ 0.00</span>
+      </div>
+    </div>
+    <button id="clear-cart" class="clear-cart-btn" style="padding: 10px 0; width: 100%;">CLEAR CART</button>
+    <button id="close-cart" style="padding: 10px 0; width: 100%; background-color: black; color: white; border: none; cursor: pointer; font-size: 14px; margin: 10px 0;">CLOSE</button>
+    <button id="proceed-to-payment" class="proceed-btn" style="padding: 10px 0; width: 100%;">PROCEED TO PAYMENT</button>
+  </div>
+  <script>
+    // Initialize cart in localStorage if not exists
+    if (!localStorage.getItem('cart')) {
+      localStorage.setItem('cart', JSON.stringify([]));
+    }
+    // DOM elements
+    const colorBoxes = document.querySelectorAll('.color-box');
+    const sizeBoxes = document.querySelectorAll('.size-box');
+    const productTitle = document.getElementById('product-title');
+    const productDescription = document.getElementById('product-description');
+    const colorLabel = document.querySelector('.color-label');
+    const addToCartBtn = document.getElementById('add-to-cart');
+    const buyNowBtn = document.getElementById('buy-now');
+    const cartCount = document.getElementById('cart-count');
+    const cartBadge = document.getElementById('cart-badge');
+    const toast = document.getElementById('toast');
+    const shoppingBag = document.getElementById('shopping-bag');
+    const cart = document.getElementById('cart');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const closeCartBtn = document.getElementById('close-cart');
+    const clearCartBtn = document.getElementById('clear-cart');
+    const proceedToPaymentBtn = document.getElementById('proceed-to-payment');
+    // Slider elements
+    const sliderTrack = document.getElementById('slider-track');
+    const sliderDots = document.getElementById('slider-dots');
+    const thumbnailNav = document.getElementById('thumbnail-nav');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    // Slider state
+    let currentSlide = 0;
+    let currentImages = [];
+    // Product data with multiple images
+    const product = {
+      id: 'tshirt-001',
+      name: "Men's Regular Fit T-Shirt",
+      price: 399.00,
+      colors: {
+        black: {
+          name: "Black",
+          hex: "#000000",
+          description: "Regular fit light black T-shirt with a round neck and short sleeves. Made from 100% premium cotton for comfortable all-day wear.",
+          images: [
+            {
+              url: "black front.png",
+              alt: "Black T-Shirt Front View"
+            },
+            {
+              url: "black back.png",
+              alt: "Black T-Shirt Back View"
+            },
+            
+          ]
+        },
+        white: {
+          name: "White",
+          hex: "#FFFFFF",
+          description: "Classic white T-shirt with breathable fabric, perfect for everyday comfort and layering. Made from 100% premium cotton.",
+          images: [
+            {
+              url: "white front.png",
+              alt: "White T-Shirt FrontView"
+            },
+            {
+              url: "white back.png",
+              alt: "White T-Shirt Back View"
+            },
+            
+          ]
+        }
+      }
+    };
+    // Initialize slider
+    function initializeSlider(images) {
+      currentImages = images;
+      currentSlide = 0;
+      
+      // Clear existing content
+      sliderTrack.innerHTML = '';
+      sliderDots.innerHTML = '';
+      thumbnailNav.innerHTML = '';
+      
+      // Create slides
+      images.forEach((image, index) => {
+        // Create slide
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+        slide.innerHTML = `<img src="${image.url}" alt="${image.alt}" loading="lazy">`;
+        sliderTrack.appendChild(slide);
+        
+        // Create dot
+        const dot = document.createElement('div');
+        dot.className = `dot ${index === 0 ? 'active' : ''}`;
+        dot.addEventListener('click', () => goToSlide(index));
+        sliderDots.appendChild(dot);
+        
+        // Create thumbnail
+        const thumbnail = document.createElement('div');
+        thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
+        thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" loading="lazy">`;
+        thumbnail.addEventListener('click', () => goToSlide(index));
+        thumbnailNav.appendChild(thumbnail);
+      });
+      
+      updateSlider();
+    }
+    // Update slider position
+    function updateSlider() {
+      const translateX = -currentSlide * 100;
+      sliderTrack.style.transform = `translateX(${translateX}%)`;
+      
+      // Update dots
+      document.querySelectorAll('.dot').forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+      
+      // Update thumbnails
+      document.querySelectorAll('.thumbnail').forEach((thumb, index) => {
+        thumb.classList.toggle('active', index === currentSlide);
+      });
+    }
+    // Go to specific slide
+    function goToSlide(index) {
+      currentSlide = index;
+      updateSlider();
+    }
+    // Next slide
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % currentImages.length;
+      updateSlider();
+    }
+    // Previous slide
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + currentImages.length) % currentImages.length;
+      updateSlider();
+    }
+    // Slider event listeners
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    // Auto-play slider (optional)
+    let autoPlayInterval;
+    function startAutoPlay() {
+      autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    }
+    function stopAutoPlay() {
+      clearInterval(autoPlayInterval);
+    }
+    // Pause auto-play on hover
+    const sliderContainer = document.querySelector('.slider-container');
+    sliderContainer.addEventListener('mouseenter', stopAutoPlay);
+    sliderContainer.addEventListener('mouseleave', startAutoPlay);
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    });
+    // Handle color selection
+    colorBoxes.forEach(box => {
+      box.addEventListener('click', () => {
+        colorBoxes.forEach(b => b.classList.remove('active'));
+        box.classList.add('active');
+        const selectedColor = box.getAttribute('data-color');
+        updateProductDisplay(selectedColor);
+      });
+    });
+    // Handle size selection
+    sizeBoxes.forEach(box => {
+      box.addEventListener('click', () => {
+        sizeBoxes.forEach(b => b.classList.remove('active'));
+        box.classList.add('active');
+      });
+    });
+    // Update product display based on selected color
+    function updateProductDisplay(color) {
+      const colorData = product.colors[color];
+      
+      // Update slider with new images
+      initializeSlider(colorData.images);
+      
+      productTitle.textContent = product.name;
+      productDescription.textContent = colorData.description;
+      colorLabel.innerHTML = `${colorData.name.toUpperCase()} | ${colorData.hex}<br>Choose color`;
+    }
+    // Get current cart items
+    function getCart() {
+      return JSON.parse(localStorage.getItem('cart'));
+    }
+    // Update cart count display
+    function updateCartCount() {
+      const cart = getCart();
+      const count = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCount.textContent = count;
+      
+      if (count > 0) {
+        cartBadge.textContent = count;
+        cartBadge.style.display = 'flex';
+      } else {
+        cartBadge.style.display = 'none';
+      }
+    }
+    // Add item to cart
+    function addToCart() {
+      const selectedColor = document.querySelector('.color-box.active').getAttribute('data-color');
+      const selectedSize = document.querySelector('.size-box.active').textContent;
+      const colorData = product.colors[selectedColor];
+      
+      const cart = getCart();
+      const existingItemIndex = cart.findIndex(item => 
+        item.productId === product.id && 
+        item.color === selectedColor && 
+        item.size === selectedSize
+      );
+      if (existingItemIndex !== -1) {
+        cart[existingItemIndex].quantity += 1;
+      } else {
+        cart.push({
+          productId: product.id,
+          name: product.name,
+          color: selectedColor,
+          colorName: colorData.name,
+          size: selectedSize,
+          price: product.price,
+          image: colorData.images[0].url,
+          quantity: 1
+        });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      showToast();
+    }
+    // Show toast notification
+    function showToast(message = "Item added to cart") {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+    // Clear cart
+    function clearCart() {
+      localStorage.setItem('cart', JSON.stringify([]));
+      updateCartCount();
+      renderCartItems();
+      showToast("Cart cleared successfully");
+    }
+    // Render cart items
+    function renderCartItems() {
+      const cart = getCart();
+      cartItemsContainer.innerHTML = '';
+      let subtotal = 0;
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = '<div style="text-align: center; padding: 20px 0; color: #666;">Your cart is empty</div>';
+      } else {
+        cart.forEach(item => {
+          const cartItem = document.createElement('div');
+          cartItem.className = 'cart-item';
+          cartItem.innerHTML = `
+            <div class="cart-item-header">
+              <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+              <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-details">Color: ${item.colorName} | Size: ${item.size}</div>
+                <div class="cart-item-price">₹ ${item.price.toFixed(2)}</div>
+              </div>
+            </div>
+            <div class="quantity">
+              <button class="decrease" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">-</button>
+              <span>${item.quantity}</span>
+              <button class="increase" data-id="${item.productId}" data-color="${item.color}" data-size="${item.size}">+</button>
+            </div>
+          `;
+          cartItemsContainer.appendChild(cartItem);
+          subtotal += item.price * item.quantity;
+        });
+      }
+      
+      document.getElementById('cart-subtotal').textContent = `₹ ${subtotal.toFixed(2)}`;
+    }
+    // Open/close cart
+    shoppingBag.addEventListener('click', () => {
+      cart.style.display = 'block';
+      setTimeout(() => {
+        cart.classList.add('open');
+        document.body.classList.add('cart-open');
+      }, 10);
+      renderCartItems();
+    });
+    closeCartBtn.addEventListener('click', () => {
+      cart.classList.remove('open');
+      document.body.classList.remove('cart-open');
+      setTimeout(() => {
+        if (!cart.classList.contains('open')) {
+          cart.style.display = 'none';
+        }
+      }, 400);
+    });
+    // Clear cart button
+    clearCartBtn.addEventListener('click', () => {
+      const cart = getCart();
+      if (cart.length === 0) {
+        showToast("Cart is already empty");
+      } else {
+        if (confirm('Are you sure you want to clear your cart?')) {
+          clearCart();
+        }
+      }
+    });
+    // Proceed to payment
+    proceedToPaymentBtn.addEventListener('click', () => {
+      const cart = getCart();
+      if (cart.length === 0) {
+        alert('Your cart is empty. Please add items to proceed to payment.');
+      } else {
+        alert('Proceeding to payment with your selected items');
+      }
+    });
+    // Adjust quantity in cart
+    document.addEventListener('click', (event) => {
+      if (event.target.classList.contains('increase') || event.target.classList.contains('decrease')) {
+        const productId = event.target.getAttribute('data-id');
+        const color = event.target.getAttribute('data-color');
+        const size = event.target.getAttribute('data-size');
+        const cart = getCart();
+        const itemIndex = cart.findIndex(item => item.productId === productId && item.color === color && item.size === size);
+        if (event.target.classList.contains('increase')) {
+          cart[itemIndex].quantity += 1;
+        } else if (event.target.classList.contains('decrease')) {
+          if (cart[itemIndex].quantity > 1) {
+            cart[itemIndex].quantity -= 1;
+          } else {
+            cart.splice(itemIndex, 1);
+          }
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        renderCartItems();
+      }
+    });
+    // Event listeners
+    addToCartBtn.addEventListener('click', addToCart);
+    buyNowBtn.addEventListener('click', () => {
+      addToCart();
+      alert('Proceeding to checkout with your selected items');
+    });
+    
+    // Close cart when clicking on the backdrop
+    document.body.addEventListener('click', function(event) {
+      // Check if cart is open
+      if (document.body.classList.contains('cart-open')) {
+        // Check if click is outside the cart and not on the shopping bag
+        if (!cart.contains(event.target) && !shoppingBag.contains(event.target)) {
+          cart.classList.remove('open');
+          document.body.classList.remove('cart-open');
+          setTimeout(() => {
+            if (!cart.classList.contains('open')) {
+              cart.style.display = 'none';
+            }
+          }, 400);
+        }
+      }
+    });
+    
+    // Initialize
+    updateCartCount();
+    updateProductDisplay('black');
+    startAutoPlay();
+  </script>
+</body>
+</html>
