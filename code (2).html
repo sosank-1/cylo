@@ -161,7 +161,6 @@
             }
         }
     </style>
-    <script type="module" src="login.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -224,37 +223,41 @@
     </div>
     <script>
         function switchTab(tabId) {
-            // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
-            // Show selected tab content
             document.getElementById(tabId).classList.add('active');
-            // Update active tab styling
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
             });
             event.currentTarget.classList.add('active');
         }
-        // Form submission handlers
+
+        // Sign In handler
         document.querySelector('#sign-in form').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Sign in functionality would be implemented here');
-            // In a real implementation, add authentication logic here
+            // Simulate successful login
+            localStorage.setItem('loggedIn', 'true');
+            window.location.href = 'profile.html';
         });
+
+        // Sign Up handler
         document.querySelector('#sign-up form').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('Sign up functionality would be implemented here');
-            // In a real implementation, add registration logic here
+            // Simulate successful signup
+            localStorage.setItem('loggedIn', 'true');
+            window.location.href = 'profile.html';
         });
+
         // Google login handler
         document.getElementById('google-signin').addEventListener('click', function() {
-            alert('Google authentication would be implemented here');
-            // In a real implementation, integrate with Google OAuth
+            localStorage.setItem('loggedIn', 'true');
+            window.location.href = 'profile.html';
         });
+
         document.getElementById('google-signup').addEventListener('click', function() {
-            alert('Google authentication would be implemented here');
-            // In a real implementation, integrate with Google OAuth
+            localStorage.setItem('loggedIn', 'true');
+            window.location.href = 'profile.html';
         });
     </script>
 </body>
