@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cylo | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 400;
+            color: #1a1a1a;
+            background-color: white;
+        }
+        .container {
+            max-width: 500px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .login-card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 0;
+            box-shadow: none;
+            border: 1px solid #eee;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px 0;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        .tab.active {
+            color: #1a1a1a;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #1a1a1a;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px 0;
+            border: none;
+            border-bottom: 1px solid #eee;
+            background-color: transparent;
+            font-size: 14px;
+            transition: border 0.3s ease;
+            color: #1a1a1a;
+        }
+        .form-group input:focus {
+            border-bottom: 1px solid #1a1a1a;
+            outline: none;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px 0;
+            background-color: white;
+            color: #1a1a1a;
+            border: 1px solid #1a1a1a;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            background-color: #1a1a1a;
+            color: white;
+        }
+        .btn.btn-google {
+            background-color: white;
+            color: #1a1a1a;
+            border: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 0;
+        }
+        .btn.btn-google:hover {
+            background-color: #1a1a1a;
+            color: white;
+        }
+        .btn.btn-google img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #1a1a1a;
+            font-size: 12px;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #eee;
+        }
+        .divider::before {
+            margin-right: 10px;
+        }
+        .divider::after {
+            margin-left: 10px;
+        }
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .forgot-password a {
+            color: #1a1a1a;
+            font-size: 13px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .forgot-password a:hover {
+            color: #1a1a1a;
+            text-decoration: underline;
+        }
+        @media (max-width: 480px) {
+            .container {
+                margin: 30px auto;
+            }
+            .login-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>CYLO</h1>
+        </div>
+        <div class="login-card">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('sign-in')">SIGN IN</div>
+                <div class="tab" onclick="switchTab('sign-up')">CREATE ACCOUNT</div>
+            </div>
+            <div class="tab-content active" id="sign-in">
+                <form>
+                    <div class="form-group">
+                        <label for="email">EMAIL</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">PASSWORD</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn">SIGN IN</button>
+                </form>
+                <div class="forgot-password">
+                    <a href="#">Forgot your password?</a>
+                </div>
+                <div class="divider">OR</div>
+                <button class="btn btn-google" id="google-signin">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bcaced3-335e-4ba8-a91e-0f98b63f88c8.png" alt="Google G logo icon" />
+                    SIGN IN WITH GOOGLE
+                </button>
+            </div>
+            <div class="tab-content" id="sign-up">
+                <form>
+                    <div class="form-group">
+                        <label for="name">FULL NAME</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-email">EMAIL</label>
+                        <input type="email" id="new-email" name="new-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">PASSWORD</label>
+                        <input type="password" id="new-password" name="new-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">CONFIRM PASSWORD</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required>
+                    </div>
+                    <button type="submit" class="btn">CREATE ACCOUNT</button>
+                </form>
+                <div class="divider">OR</div>
+                <button class="btn btn-google" id="google-signup">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5bcaced3-335e-4ba8-a91e-0f98b63f88c8.png" alt="Google G logo icon" />
+                    SIGN UP WITH GOOGLE
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Show selected tab content
+            document.getElementById(tabId).classList.add('active');
+            // Update active tab styling
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+        }
+        // Form submission handlers
+        document.querySelector('#sign-in form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Sign in functionality would be implemented here');
+            // In a real implementation, add authentication logic here
+        });
+        document.querySelector('#sign-up form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Sign up functionality would be implemented here');
+            // In a real implementation, add registration logic here
+        });
+        // Google login handler
+        document.getElementById('google-signin').addEventListener('click', function() {
+            alert('Google authentication would be implemented here');
+            // In a real implementation, integrate with Google OAuth
+        });
+        document.getElementById('google-signup').addEventListener('click', function() {
+            alert('Google authentication would be implemented here');
+            // In a real implementation, integrate with Google OAuth
+        });
+    </script>
+</body>
+</html>
