@@ -169,8 +169,8 @@
         </div>
         <div class="login-card">
             <div class="tabs">
-                <div class="tab active" onclick="switchTab('sign-in')">SIGN IN</div>
-                <div class="tab" onclick="switchTab('sign-up')">CREATE ACCOUNT</div>
+                <div class="tab active" onclick="switchTab('sign-in', event)">SIGN IN</div>
+                <div class="tab" onclick="switchTab('sign-up', event)">CREATE ACCOUNT</div>
             </div>
             <div class="tab-content active" id="sign-in">
                 <form>
@@ -221,43 +221,63 @@
             </div>
         </div>
     </div>
-    <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.classList.remove('active');
-            });
+
+    <!-- Firebase Authentication Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAnOrm7pHWFjQy5hk8x8VtXTMZmAplaFlM",
+            authDomain: "cylo-b89dc.firebaseapp.com",
+            projectId: "cylo-b89dc"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        function switchTab(tabId, event) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             event.currentTarget.classList.add('active');
         }
 
-        // Sign In handler
-        document.querySelector('#sign-in form').addEventListener('submit', function(e) {
+        // Sign in
+        document.querySelector('#sign-in form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // Simulate successful login
-            localStorage.setItem('loggedIn', 'true');
-            window.location.href = 'profile.html';
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("Login successful!");
+                window.location.href = "profile.html";
+            } catch (error) {
+                alert("Invalid email or password");
+            }
         });
 
-        // Sign Up handler
-        document.querySelector('#sign-up form').addEventListener('submit', function(e) {
+        // Sign up
+        document.querySelector('#sign-up form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            // Simulate successful signup
-            localStorage.setItem('loggedIn', 'true');
-            window.location.href = 'profile.html';
-        });
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('new-email').value;
+            const password = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
 
-        // Google login handler
-        document.getElementById('google-signin').addEventListener('click', function() {
-            localStorage.setItem('loggedIn', 'true');
-            window.location.href = 'profile.html';
-        });
+            if (password !== confirmPassword) {
+                alert("Passwords do not match");
+                return;
+            }
 
-        document.getElementById('google-signup').addEventListener('click', function() {
-            localStorage.setItem('loggedIn', 'true');
-            window.location.href = 'profile.html';
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                alert("Account created successfully!");
+                window.location.href = "profile.html";
+            } catch (error) {
+                alert("Error: " + error.message);
+            }
         });
     </script>
 </body>
