@@ -59,7 +59,8 @@
         
         .mobile-menu {
             transform: translateX(100%);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); /* Changed to match search panel */
+            box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1); /* Added shadow for consistency */
         }
         
         .mobile-menu.active {
@@ -72,13 +73,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            background-color: rgba(0, 0, 0, 0.5); /* Changed opacity to match search overlay */
+            backdrop-filter: blur(2px); /* Added blur effect */
+            -webkit-backdrop-filter: blur(2px); /* Added for Safari */
             z-index: 40;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease; /* Changed transition to match search */
         }
         
         .menu-overlay.active {
@@ -280,7 +281,7 @@
         </div>
     </nav>
     
-    <!-- Background Blur Overlay -->
+    <!-- Background Blur Overlay for Mobile Menu -->
     <div id="menu-overlay" class="menu-overlay"></div>
     
     <!-- Mobile Menu -->
