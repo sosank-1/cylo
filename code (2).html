@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
     <title>Cylo | Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
+        /* --- Your original styles kept exactly as they were --- */
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -13,152 +15,34 @@
             color: #1a1a1a;
             background-color: white;
         }
-        .container {
-            max-width: 500px;
-            margin: 60px auto;
-            padding: 0 20px;
-        }
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .logo h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: #1a1a1a;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-        .login-card {
-            background-color: white;
-            padding: 40px;
-            border-radius: 0;
-            box-shadow: none;
-            border: 1px solid #eee;
-        }
-        .tabs {
-            display: flex;
-            margin-bottom: 30px;
-        }
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 15px 0;
-            cursor: pointer;
-            border-bottom: 1px solid #eee;
-            color: #1a1a1a;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-        .tab.active {
-            color: #1a1a1a;
-            border-bottom: 1px solid #1a1a1a;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: #1a1a1a;
-        }
-        .form-group input {
-            width: 100%;
-            padding: 10px 0;
-            border: none;
-            border-bottom: 1px solid #eee;
-            background-color: transparent;
-            font-size: 14px;
-            transition: border 0.3s ease;
-            color: #1a1a1a;
-        }
-        .form-group input:focus {
-            border-bottom: 1px solid #1a1a1a;
-            outline: none;
-        }
-        .btn {
-            width: 100%;
-            padding: 10px 0;
-            background-color: white;
-            color: #1a1a1a;
-            border: 1px solid #1a1a1a;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s, color 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-        .btn:hover {
-            background-color: #1a1a1a;
-            color: white;
-        }
-        .btn.btn-google {
-            background-color: white;
-            color: #1a1a1a;
-            border: 1px solid #1a1a1a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 0;
-        }
-        .btn.btn-google:hover {
-            background-color: #1a1a1a;
-            color: white;
-        }
-        .btn.btn-google img {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-        }
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 25px 0;
-            color: #1a1a1a;
-            font-size: 12px;
-        }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #eee;
-        }
-        .divider::before {
-            margin-right: 10px;
-        }
-        .divider::after {
-            margin-left: 10px;
-        }
-        .forgot-password {
-            text-align: center;
-            margin-top: 15px;
-        }
-        .forgot-password a {
-            color: #1a1a1a;
-            font-size: 13px;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        .forgot-password a:hover {
-            color: #1a1a1a;
-            text-decoration: underline;
-        }
+        .container { max-width: 500px; margin: 60px auto; padding: 0 20px; }
+        .logo { text-align: center; margin-bottom: 30px; }
+        .logo h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 4px; color: #1a1a1a; margin-bottom: 10px; text-transform: uppercase; }
+        .login-card { background-color: white; padding: 40px; border-radius: 0; box-shadow: none; border: 1px solid #eee; }
+        .tabs { display: flex; margin-bottom: 30px; }
+        .tab { flex: 1; text-align: center; padding: 15px 0; cursor: pointer; border-bottom: 1px solid #eee; color: #1a1a1a; transition: all 0.3s ease; font-size: 14px; }
+        .tab.active { color: #1a1a1a; border-bottom: 1px solid #1a1a1a; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 13px; color: #1a1a1a; }
+        .form-group input { width: 100%; padding: 10px 0; border: none; border-bottom: 1px solid #eee; background-color: transparent; font-size: 14px; transition: border 0.3s ease; color: #1a1a1a; }
+        .form-group input:focus { border-bottom: 1px solid #1a1a1a; outline: none; }
+        .btn { width: 100%; padding: 10px 0; background-color: white; color: #1a1a1a; border: 1px solid #1a1a1a; font-size: 14px; cursor: pointer; transition: background-color 0.3s, color 0.3s; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .btn:hover { background-color: #1a1a1a; color: white; }
+        .btn.btn-google { background-color: white; color: #1a1a1a; border: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: center; padding: 10px 0; }
+        .btn.btn-google:hover { background-color: #1a1a1a; color: white; }
+        .btn.btn-google img { width: 20px; height: 20px; margin-right: 10px; }
+        .divider { display: flex; align-items: center; margin: 25px 0; color: #1a1a1a; font-size: 12px; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #eee; }
+        .divider::before { margin-right: 10px; }
+        .divider::after { margin-left: 10px; }
+        .forgot-password { text-align: center; margin-top: 15px; }
+        .forgot-password a { color: #1a1a1a; font-size: 13px; text-decoration: none; transition: color 0.3s ease; }
+        .forgot-password a:hover { color: #1a1a1a; text-decoration: underline; }
         @media (max-width: 480px) {
-            .container {
-                margin: 30px auto;
-            }
-            .login-card {
-                padding: 30px 20px;
-            }
+            .container { margin: 30px auto; }
+            .login-card { padding: 30px 20px; }
         }
     </style>
 </head>
@@ -173,7 +57,7 @@
                 <div class="tab" onclick="switchTab('sign-up', event)">CREATE ACCOUNT</div>
             </div>
             <div class="tab-content active" id="sign-in">
-                <form>
+                <form id="signin-form">
                     <div class="form-group">
                         <label for="email">EMAIL</label>
                         <input type="email" id="email" name="email" required>
@@ -194,7 +78,7 @@
                 </button>
             </div>
             <div class="tab-content" id="sign-up">
-                <form>
+                <form id="signup-form">
                     <div class="form-group">
                         <label for="name">FULL NAME</label>
                         <input type="text" id="name" name="name" required>
@@ -221,36 +105,75 @@
             </div>
         </div>
     </div>
-    <script>
-        function switchTab(tabId, event) {
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { app, auth } from './firebase-config.js';
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } 
+        from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+        // Tab switch
+        window.switchTab = function(tabId, event) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             event.currentTarget.classList.add('active');
-        }
+        };
 
-        document.querySelector('#sign-in form').addEventListener('submit', function(e) {
+        // Sign In
+        document.getElementById('signin-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert('Sign in functionality would be implemented here');
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                alert("Signed in successfully!");
+                window.location.href = "account.html";
+            } catch (error) {
+                alert(error.message);
+            }
         });
 
-        document.querySelector('#sign-up form').addEventListener('submit', function(e) {
+        // Sign Up
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const email = document.getElementById('new-email').value;
             const password = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
             if (password !== confirmPassword) {
                 alert('Passwords do not match!');
                 return;
             }
-            alert('Sign up functionality would be implemented here');
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                alert("Account created successfully!");
+                window.location.href = "account.html";
+            } catch (error) {
+                alert(error.message);
+            }
         });
 
-        document.getElementById('google-signin').addEventListener('click', function() {
-            alert('Google authentication would be implemented here');
+        // Google Sign In
+        const provider = new GoogleAuthProvider();
+        document.getElementById('google-signin').addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+                alert("Signed in with Google!");
+                window.location.href = "account.html";
+            } catch (error) {
+                alert(error.message);
+            }
         });
 
-        document.getElementById('google-signup').addEventListener('click', function() {
-            alert('Google authentication would be implemented here');
+        // Google Sign Up
+        document.getElementById('google-signup').addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, provider);
+                alert("Account created with Google!");
+                window.location.href = "account.html";
+            } catch (error) {
+                alert(error.message);
+            }
         });
     </script>
 </body>
