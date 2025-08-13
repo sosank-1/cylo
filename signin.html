@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +6,6 @@
     <title>Cylo | Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <style>
-        /* --- Your original styles kept exactly as they were --- */
         body {
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -66,10 +64,17 @@
                         <label for="password">PASSWORD</label>
                         <input type="password" id="password" name="password" required>
                     </div>
+
+                    <!-- Keep me signed in -->
+                    <div class="form-group" style="display:flex;align-items:center;gap:8px;font-size:13px;">
+                        <input type="checkbox" id="keep-signed-in" />
+                        <label for="keep-signed-in" style="margin:0;">Keep me signed in</label>
+                    </div>
+
                     <button type="submit" class="btn">SIGN IN</button>
                 </form>
                 <div class="forgot-password">
-                    <a href="#">Forgot your password?</a>
+                    <a href="#" id="forgot-password">Forgot your password?</a>
                 </div>
                 <div class="divider">OR</div>
                 <button class="btn btn-google" id="google-signin">
@@ -109,8 +114,16 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { app, auth } from './firebase-config.js';
-        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } 
-        from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            GoogleAuthProvider, 
+            signInWithPopup, 
+            sendPasswordResetEmail,
+            setPersistence,
+            browserLocalPersistence,
+            browserSessionPersistence
+        } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
         // Tab switch
         window.switchTab = function(tabId, event) {
@@ -125,10 +138,29 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const keepSignedIn = document.getElementById('keep-signed-in').checked;
+
             try {
+                await setPersistence(auth, keepSignedIn ? browserLocalPersistence : browserSessionPersistence);
                 await signInWithEmailAndPassword(auth, email, password);
                 alert("Signed in successfully!");
                 window.location.href = "account.html";
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        // Forgot password
+        document.getElementById('forgot-password').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            if (!email) {
+                alert("Please enter your email address above before resetting your password.");
+                return;
+            }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                alert("Password reset email sent. Please check your inbox.");
             } catch (error) {
                 alert(error.message);
             }
