@@ -113,6 +113,15 @@
 
     <!-- Firebase SDKs -->
     <script type="module">
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Already logged in, redirect to profile page
+        window.location.href = "account.html";
+    }
+});
+
         import { app, auth } from './firebase-config.js';
         import { 
             signInWithEmailAndPassword, 
