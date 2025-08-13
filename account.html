@@ -887,11 +887,26 @@
             });
         });
         
-        // Logout function
-        function handleLogout() {
-            if (confirm('Are you sure you want to log out?')) {
-                // In a real application, this would handle the logout process
-                window.location.href = 'signin.html';
+       import { auth } from './firebase-config.js';
+import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+// Redirect if not logged in
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "signin.html";
+    }
+});
+
+// Logout button click
+document.getElementById('logout-btn').addEventListener('click', async () => {
+    try {
+        await signOut(auth);
+        window.location.href = "signin.html";
+    } catch (error) {
+        alert("Error signing out: " + error.message);
+    }
+});
+
             }
         }
     </script>
