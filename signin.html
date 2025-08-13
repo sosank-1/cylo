@@ -16,28 +16,27 @@
         .container { max-width: 500px; margin: 60px auto; padding: 0 20px; }
         .logo { text-align: center; margin-bottom: 30px; }
         .logo h1 { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; letter-spacing: 4px; color: #1a1a1a; margin-bottom: 10px; text-transform: uppercase; }
-        .login-card { background-color: white; padding: 40px; border-radius: 0; box-shadow: none; border: 1px solid #eee; }
+        .login-card { background-color: white; padding: 40px; border-radius: 0; border: 1px solid #eee; }
         .tabs { display: flex; margin-bottom: 30px; }
-        .tab { flex: 1; text-align: center; padding: 15px 0; cursor: pointer; border-bottom: 1px solid #eee; color: #1a1a1a; transition: all 0.3s ease; font-size: 14px; }
-        .tab.active { color: #1a1a1a; border-bottom: 1px solid #1a1a1a; }
+        .tab { flex: 1; text-align: center; padding: 15px 0; cursor: pointer; border-bottom: 1px solid #eee; font-size: 14px; }
+        .tab.active { border-bottom: 1px solid #1a1a1a; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 13px; color: #1a1a1a; }
-        .form-group input { width: 100%; padding: 10px 0; border: none; border-bottom: 1px solid #eee; background-color: transparent; font-size: 14px; transition: border 0.3s ease; color: #1a1a1a; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 13px; }
+        .form-group input { width: 100%; padding: 10px 0; border: none; border-bottom: 1px solid #eee; background-color: transparent; font-size: 14px; }
         .form-group input:focus { border-bottom: 1px solid #1a1a1a; outline: none; }
-        .btn { width: 100%; padding: 10px 0; background-color: white; color: #1a1a1a; border: 1px solid #1a1a1a; font-size: 14px; cursor: pointer; transition: background-color 0.3s, color 0.3s; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .btn { width: 100%; padding: 10px 0; background-color: white; color: #1a1a1a; border: 1px solid #1a1a1a; font-size: 14px; cursor: pointer; text-transform: uppercase; margin-bottom: 10px; }
         .btn:hover { background-color: #1a1a1a; color: white; }
-        .btn.btn-google { background-color: white; color: #1a1a1a; border: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: center; padding: 10px 0; }
-        .btn.btn-google:hover { background-color: #1a1a1a; color: white; }
+        .btn.btn-google { display: flex; align-items: center; justify-content: center; }
         .btn.btn-google img { width: 20px; height: 20px; margin-right: 10px; }
-        .divider { display: flex; align-items: center; margin: 25px 0; color: #1a1a1a; font-size: 12px; }
+        .divider { display: flex; align-items: center; margin: 25px 0; font-size: 12px; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #eee; }
         .divider::before { margin-right: 10px; }
         .divider::after { margin-left: 10px; }
         .forgot-password { text-align: center; margin-top: 15px; }
-        .forgot-password a { color: #1a1a1a; font-size: 13px; text-decoration: none; transition: color 0.3s ease; }
-        .forgot-password a:hover { color: #1a1a1a; text-decoration: underline; }
+        .forgot-password a { font-size: 13px; text-decoration: none; }
+        .forgot-password a:hover { text-decoration: underline; }
         @media (max-width: 480px) {
             .container { margin: 30px auto; }
             .login-card { padding: 30px 20px; }
@@ -54,6 +53,8 @@
                 <div class="tab active" onclick="switchTab('sign-in', event)">SIGN IN</div>
                 <div class="tab" onclick="switchTab('sign-up', event)">CREATE ACCOUNT</div>
             </div>
+
+            <!-- Sign In -->
             <div class="tab-content active" id="sign-in">
                 <form id="signin-form">
                     <div class="form-group">
@@ -64,17 +65,10 @@
                         <label for="password">PASSWORD</label>
                         <input type="password" id="password" name="password" required>
                     </div>
-
-                    <!-- Keep me signed in -->
-                    <div class="form-group" style="display:flex;align-items:center;gap:8px;font-size:13px;">
-                        <input type="checkbox" id="keep-signed-in" />
-                        <label for="keep-signed-in" style="margin:0;">Keep me signed in</label>
-                    </div>
-
                     <button type="submit" class="btn">SIGN IN</button>
                 </form>
                 <div class="forgot-password">
-                    <a href="#" id="forgot-password">Forgot your password?</a>
+                    <a href="#">Forgot your password?</a>
                 </div>
                 <div class="divider">OR</div>
                 <button class="btn btn-google" id="google-signin">
@@ -82,6 +76,8 @@
                     SIGN IN WITH GOOGLE
                 </button>
             </div>
+
+            <!-- Sign Up -->
             <div class="tab-content" id="sign-up">
                 <form id="signup-form">
                     <div class="form-group">
@@ -111,52 +107,17 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
-        // Agar already login hai to account page pe bhej do
-        if (localStorage.getItem("user")) {
-            window.location.href = "account.html";
-        }
-
-        function handleLogin() {
-            let username = document.getElementById("username").value.trim();
-            let password = document.getElementById("password").value.trim();
-
-            if (username === "" || password === "") {
-                alert("Please fill in all fields");
-                return;
-            }
-
-            // Dummy login (tum apna backend check laga sakte ho)
-            if (username === "test" && password === "1234") {
-                localStorage.setItem("user", JSON.stringify({ username: username }));
-                window.location.href = "account.html";
-            } else {
-                alert("Invalid credentials");
-            }
-        }
+        emailjs.init("mk5D-t6uD1-6A1R-Z"); // Public Key
     </script>
+
+    <!-- Firebase SDK -->
     <script type="module">
-        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // Already logged in, redirect to profile page
-        window.location.href = "account.html";
-    }
-});
-
         import { app, auth } from './firebase-config.js';
-        import { 
-            signInWithEmailAndPassword, 
-            createUserWithEmailAndPassword, 
-            GoogleAuthProvider, 
-            signInWithPopup, 
-            sendPasswordResetEmail,
-            setPersistence,
-            browserLocalPersistence,
-            browserSessionPersistence
-        } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } 
+        from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
         // Tab switch
         window.switchTab = function(tabId, event) {
@@ -171,10 +132,7 @@ onAuthStateChanged(auth, (user) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const keepSignedIn = document.getElementById('keep-signed-in').checked;
-
             try {
-                await setPersistence(auth, keepSignedIn ? browserLocalPersistence : browserSessionPersistence);
                 await signInWithEmailAndPassword(auth, email, password);
                 alert("Signed in successfully!");
                 window.location.href = "account.html";
@@ -183,28 +141,14 @@ onAuthStateChanged(auth, (user) => {
             }
         });
 
-        // Forgot password
-        document.getElementById('forgot-password').addEventListener('click', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value.trim();
-            if (!email) {
-                alert("Please enter your email address above before resetting your password.");
-                return;
-            }
-            try {
-                await sendPasswordResetEmail(auth, email);
-                alert("Password reset email sent. Please check your inbox.");
-            } catch (error) {
-                alert(error.message);
-            }
-        });
-
-        // Sign Up
+        // Sign Up + Greeting Email
         document.getElementById('signup-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const name = document.getElementById('name').value;
             const email = document.getElementById('new-email').value;
             const password = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
+
             if (password !== confirmPassword) {
                 alert('Passwords do not match!');
                 return;
@@ -212,6 +156,17 @@ onAuthStateChanged(auth, (user) => {
             try {
                 await createUserWithEmailAndPassword(auth, email, password);
                 alert("Account created successfully!");
+
+                // Send Greeting Email via EmailJS
+                emailjs.send("service_0e6tt06", "template_bhnkbcc", {
+                    user_name: name,
+                    user_email: email
+                }).then(() => {
+                    console.log("Greeting email sent to", email);
+                }).catch((err) => {
+                    console.error("Email send error:", err);
+                });
+
                 window.location.href = "account.html";
             } catch (error) {
                 alert(error.message);
