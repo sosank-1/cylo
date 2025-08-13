@@ -887,11 +887,27 @@
             });
         });
         
-        // Logout function
+<script>
+        // Agar login nahi hai to signin page bhej do
+        const userData = localStorage.getItem("user");
+        if (!userData) {
+            window.location.href = "signin.html";
+        } else {
+            const user = JSON.parse(userData);
+            document.getElementById("userName").innerText = user.username;
+        }
+
         function handleLogout() {
-            if (confirm('Are you sure you want to log out?')) {
-                // In a real application, this would handle the logout process
-                window.location.href = 'signin.html';
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("user");
+                sessionStorage.clear();
+                document.cookie.split(";").forEach(function(c) {
+                    document.cookie = c.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+                });
+                window.location.href = "signin.html";
+            }
+        }
+    </script>
             }
         }
     </script>
