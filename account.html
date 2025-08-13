@@ -830,29 +830,6 @@
     </div>
 
     <script>
-         import { auth } from './firebase-config.js';
-        import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
-        // Check if user is logged in
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                // Not logged in, redirect to sign in page
-                window.location.href = "signin.html";
-            } else {
-                // Show user info
-                document.getElementById('user-email').textContent = "Logged in as: " + user.email;
-            }
-        });
-
-        // Logout button
-        document.getElementById('logout-btn').addEventListener('click', async () => {
-            try {
-                await signOut(auth);
-                window.location.href = "signin.html";
-            } catch (error) {
-                alert("Error signing out: " + error.message);
-            }
-        });
         document.addEventListener('DOMContentLoaded', function() {
             // Navigation functionality
             const navLinks = document.querySelectorAll('.nav-link:not(.logout-link .nav-link)');
@@ -908,6 +885,29 @@
                     });
                 });
             });
+        });
+          import { auth } from './firebase-config.js';
+        import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+        // Check if user is logged in
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // Not logged in, redirect to sign in page
+                window.location.href = "signin.html";
+            } else {
+                // Show user info
+                document.getElementById('user-email').textContent = "Logged in as: " + user.email;
+            }
+        });
+
+        // Logout button
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                window.location.href = "signin.html";
+            } catch (error) {
+                alert("Error signing out: " + error.message);
+            }
         });
        
     </script>
