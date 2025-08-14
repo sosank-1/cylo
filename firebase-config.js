@@ -7,7 +7,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAnOrm7pHWFjQy5hk8x8VtXTMZmAplaFlM",
   authDomain: "cylo-b89dc.firebaseapp.com",
   projectId: "cylo-b89dc",
-  storageBucket: "cylo-b89dc.firebasestorage.app",
+  storageBucket: "cylo-b89dc.appspot.com", // Corrected the storage bucket URL
   messagingSenderId: "451560803879",
   appId: "1:451560803879:web:3ae36b338e7a0056294802"
 };
