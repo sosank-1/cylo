@@ -18,13 +18,11 @@
             --hover-bg: #f0f0f0;
             --transition: all 0.3s ease;
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: var(--primary-font);
             color: var(--primary-color);
@@ -33,13 +31,11 @@
             font-weight: 300;
             letter-spacing: 0.5px;
         }
-
         .container {
             display: flex;
             min-height: 100vh;
             max-width: 100%;
         }
-
         /* Sidebar Navigation */
         .sidebar {
             width: 240px;
@@ -51,17 +47,16 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            z-index: 100;
+            transition: transform 0.3s ease;
         }
-
         .nav-menu {
             list-style: none;
             flex: 1;
         }
-
         .nav-item {
             margin-bottom: 2px;
         }
-
         .nav-link {
             display: flex;
             align-items: center;
@@ -75,18 +70,15 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
         .nav-link:hover {
             background-color: var(--hover-bg);
             color: var(--primary-color);
         }
-
         .nav-link.active {
             color: var(--primary-color);
             font-weight: 500;
             background-color: var(--light-bg);
         }
-
         .nav-link.active::before {
             content: '';
             position: absolute;
@@ -96,57 +88,49 @@
             width: 2px;
             background-color: var(--accent-color);
         }
-
         .nav-link i {
             margin-right: 12px;
             font-size: 14px;
             width: 20px;
             text-align: center;
         }
-
         /* Logout Link */
         .logout-link {
             margin-top: auto;
             border-top: 1px solid var(--border-color);
             padding-top: 20px;
         }
-
         /* Main Content */
         .main-content {
             flex: 1;
             margin-left: 240px;
             padding: 50px;
             max-width: 1200px;
+            transition: margin-left 0.3s ease;
         }
-
         .content-section {
             display: none;
             animation: fadeIn 0.5s ease;
         }
-
         .content-section.active {
             display: block;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         /* Minimalistic Section Styles */
         .section-header {
             margin-bottom: 40px;
             padding-bottom: 15px;
             border-bottom: 1px solid var(--border-color);
         }
-
         .section-header h2 {
             font-size: 28px;
             font-weight: 300;
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
-
         .minimal-card {
             background-color: #fff;
             border: 1px solid var(--border-color);
@@ -154,7 +138,6 @@
             padding: 35px;
             margin-bottom: 30px;
         }
-
         .minimal-card h3 {
             font-size: 18px;
             font-weight: 400;
@@ -162,7 +145,6 @@
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
-
         .minimal-card p {
             color: var(--secondary-color);
             font-size: 14px;
@@ -170,7 +152,6 @@
             margin-bottom: 25px;
             letter-spacing: 0.3px;
         }
-
         .btn {
             background-color: var(--primary-color);
             color: white;
@@ -186,27 +167,22 @@
             margin-right: 15px;
             margin-bottom: 15px;
         }
-
         .btn:hover {
             background-color: #333;
         }
-
         .btn-outline {
             background-color: transparent;
             border: 1px solid var(--primary-color);
             color: var(--primary-color);
         }
-
         .btn-outline:hover {
             background-color: var(--primary-color);
             color: white;
         }
-
         /* Form Styles */
         .form-group {
             margin-bottom: 25px;
         }
-
         .form-group label {
             display: block;
             font-size: 11px;
@@ -216,7 +192,6 @@
             letter-spacing: 1px;
             font-weight: 500;
         }
-
         .form-control {
             width: 100%;
             padding: 12px 14px;
@@ -229,17 +204,125 @@
             background-color: #fff;
             letter-spacing: 0.3px;
         }
-
         .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
         }
+        
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 101;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 0;
+            cursor: pointer;
+        }
+        
+        /* Profile Summary */
+        .profile-summary {
+            display: block;
+        }
+        .profile-summary.hidden {
+            display: none;
+        }
+        .profile-form {
+            display: none;
+        }
+        .profile-form.active {
+            display: block;
+        }
+        .welcome-message {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .empty-state i {
+            font-size: 48px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+        .empty-state p {
+            color: var(--secondary-color);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 80px 20px 50px;
+            }
+        }
+        
+        /* Success Message */
+        .success-message {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        /* Error Message */
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
     <div class="container">
         <!-- Sidebar Navigation -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <nav>
                 <ul class="nav-menu">
                     <li class="nav-item">
@@ -292,7 +375,7 @@
                 </a>
             </div>
         </aside>
-
+        
         <!-- Main Content -->
         <main class="main-content">
             <!-- Profile Section -->
@@ -301,21 +384,157 @@
                     <h2>Profile</h2>
                 </div>
                 
+                <div class="success-message" id="profile-success-message">
+                    Profile updated successfully!
+                </div>
+                
+                <div class="error-message" id="profile-error-message">
+                    Error updating profile. Please try again.
+                </div>
+                
                 <div class="minimal-card">
                     <h3>Personal Information</h3>
-                    <p>Welcome, <span id="user-email">Loading...</span></p>
-                    <button class="btn">Edit Profile</button>
-                    <button class="btn btn-outline">Change Password</button>
+                    
+                    <!-- Profile Summary View -->
+                    <div class="profile-summary" id="profile-summary">
+                        <p class="welcome-message">Welcome, <strong id="welcome-name">Loading...</strong></p>
+                        <button class="btn" id="edit-profile-btn">Edit Profile</button>
+                    </div>
+                    
+                    <!-- Profile Edit Form -->
+                    <form class="profile-form" id="profile-form">
+                        <div class="form-group">
+                            <label for="display-name">Full Name</label>
+                            <input type="text" id="display-name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" class="form-control">
+                        </div>
+                        <button type="submit" class="btn">Save Changes</button>
+                        <button type="button" class="btn btn-outline" id="cancel-edit-btn">Cancel</button>
+                    </form>
+                </div>
+            </section>
+            
+            <!-- Orders Section -->
+            <section id="orders" class="content-section">
+                <div class="section-header">
+                    <h2>Orders</h2>
+                </div>
+                
+                <div class="minimal-card">
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>No orders yet</h3>
+                        <p>When you place an order, it will appear here.</p>
+                        <button class="btn">Start Shopping</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Account Settings Section -->
+            <section id="settings" class="content-section">
+                <div class="section-header">
+                    <h2>Account Settings</h2>
+                </div>
+                
+                <div class="minimal-card">
+                    <h3>Preferences</h3>
+                    <p>Manage your account preferences and settings.</p>
+                    <button class="btn">Update Settings</button>
+                </div>
+            </section>
+            
+            <!-- Wishlist Section -->
+            <section id="wishlist" class="content-section">
+                <div class="section-header">
+                    <h2>Wishlist</h2>
+                </div>
+                
+                <div class="minimal-card">
+                    <div class="empty-state">
+                        <i class="fas fa-heart"></i>
+                        <h3>Your wishlist is empty</h3>
+                        <p>Add items to your wishlist and they will appear here.</p>
+                        <button class="btn">Browse Products</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Payment Options Section -->
+            <section id="payment" class="content-section">
+                <div class="section-header">
+                    <h2>Payment Options</h2>
+                </div>
+                
+                <div class="minimal-card">
+                    <h3>Payment Methods</h3>
+                    <p>Manage your saved payment methods.</p>
+                    <button class="btn">Add Payment Method</button>
+                </div>
+            </section>
+            
+            <!-- Reviews Section -->
+            <section id="reviews" class="content-section">
+                <div class="section-header">
+                    <h2>Reviews</h2>
+                </div>
+                
+                <div class="minimal-card">
+                    <div class="empty-state">
+                        <i class="fas fa-star"></i>
+                        <h3>No reviews yet</h3>
+                        <p>When you review a product, it will appear here.</p>
+                        <button class="btn">Browse Products</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Returns Section -->
+            <section id="returns" class="content-section">
+                <div class="section-header">
+                    <h2>Returns</h2>
+                </div>
+                
+                <div class="minimal-card">
+                    <div class="empty-state">
+                        <i class="fas fa-undo"></i>
+                        <h3>No returns yet</h3>
+                        <p>When you request a return, it will appear here.</p>
+                        <button class="btn">View Orders</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Help Section -->
+            <section id="help" class="content-section">
+                <div class="section-header">
+                    <h2>Help</h2>
+                </div>
+                
+                <div class="minimal-card">
+                    <h3>Customer Support</h3>
+                    <p>Need help? Contact our customer support team.</p>
+                    <button class="btn">Contact Support</button>
                 </div>
             </section>
         </main>
     </div>
-
+    
     <!-- Firebase Auth Integration -->
     <script type="module">
         import { auth } from './firebase-config.js';
-        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
+        import { onAuthStateChanged, signOut, updateProfile, updateEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        
         // Redirect if not logged in & display user email
         onAuthStateChanged(auth, (user) => {
             if (!user) {
@@ -323,10 +542,23 @@
                 window.location.href = "signin.html"; 
             } else {
                 // If user is logged in, display their email
-                document.getElementById("user-email").textContent = user.email;
+                const email = user.email;
+                const displayName = user.displayName || "";
+                
+                // Set email in form
+                document.getElementById("email").value = email;
+                document.getElementById("display-name").value = displayName;
+                
+                // Set welcome message
+                document.getElementById("welcome-name").textContent = displayName || email;
+                
+                // Load additional user data if available
+                const userData = JSON.parse(localStorage.getItem('userData')) || {};
+                document.getElementById("phone").value = userData.phone || "";
+                document.getElementById("address").value = userData.address || "";
             }
         });
-
+        
         // Logout function
         window.handleLogout = async function() {
             if (confirm('Are you sure you want to log out?')) {
@@ -335,6 +567,188 @@
                 window.location.href = "signin.html"; 
             }
         };
+        
+        // Profile form submission
+        document.getElementById('profile-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const displayName = document.getElementById('display-name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            
+            try {
+                // Update display name in Firebase Auth
+                await updateProfile(auth.currentUser, {
+                    displayName: displayName
+                });
+                
+                // Update email in Firebase Auth
+                if (email !== auth.currentUser.email) {
+                    await updateEmail(auth.currentUser, email);
+                }
+                
+                // Save additional user data to localStorage
+                const userData = {
+                    phone: phone,
+                    address: address
+                };
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                // Update welcome message
+                document.getElementById("welcome-name").textContent = displayName;
+                
+                // Show success message
+                const successMessage = document.getElementById('profile-success-message');
+                successMessage.classList.add('show');
+                
+                // Hide error message if shown
+                const errorMessage = document.getElementById('profile-error-message');
+                errorMessage.classList.remove('show');
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 3000);
+                
+                // Switch back to summary view
+                document.getElementById('profile-summary').classList.remove('hidden');
+                document.getElementById('profile-form').classList.remove('active');
+                
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                
+                // Show error message
+                const errorMessage = document.getElementById('profile-error-message');
+                errorMessage.textContent = `Error updating profile: ${error.message}`;
+                errorMessage.classList.add('show');
+                
+                // Hide error message after 5 seconds
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 5000);
+            }
+        });
+    </script>
+    
+    <script>
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all nav links
+                    navLinks.forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked nav link
+                    this.classList.add('active');
+                    
+                    // Hide all content sections
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show the corresponding content section
+                    const sectionId = this.getAttribute('data-section');
+                    document.getElementById(sectionId).classList.add('active');
+                    
+                    // Close mobile menu if open
+                    const sidebar = document.getElementById('sidebar');
+                    if (sidebar.classList.contains('active')) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!sidebar.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+                    sidebar.classList.remove('active');
+                }
+            });
+            
+            // Profile edit functionality
+            const editProfileBtn = document.getElementById('edit-profile-btn');
+            const cancelEditBtn = document.getElementById('cancel-edit-btn');
+            const profileSummary = document.getElementById('profile-summary');
+            const profileForm = document.getElementById('profile-form');
+            
+            editProfileBtn.addEventListener('click', function() {
+                profileSummary.classList.add('hidden');
+                profileForm.classList.add('active');
+            });
+            
+            cancelEditBtn.addEventListener('click', function() {
+                profileSummary.classList.remove('hidden');
+                profileForm.classList.remove('active');
+                
+                // Reset form to current values
+                const welcomeName = document.getElementById('welcome-name').textContent;
+                const userData = JSON.parse(localStorage.getItem('userData')) || {};
+                
+                document.getElementById('display-name').value = welcomeName;
+                document.getElementById('email').value = auth.currentUser.email;
+                document.getElementById('phone').value = userData.phone || "";
+                document.getElementById('address').value = userData.address || "";
+            });
+            
+            // Handle button clicks in empty states
+            const startShoppingBtn = document.querySelector('#orders .btn');
+            if (startShoppingBtn) {
+                startShoppingBtn.addEventListener('click', function() {
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            const browseProductsBtns = document.querySelectorAll('#wishlist .btn, #reviews .btn');
+            browseProductsBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    window.location.href = 'index.html';
+                });
+            });
+            
+            const viewOrdersBtn = document.querySelector('#returns .btn');
+            if (viewOrdersBtn) {
+                viewOrdersBtn.addEventListener('click', function() {
+                    document.querySelector('[data-section="orders"]').click();
+                });
+            }
+            
+            const contactSupportBtn = document.querySelector('#help .btn');
+            if (contactSupportBtn) {
+                contactSupportBtn.addEventListener('click', function() {
+                    alert('Contact: support@cylo.com');
+                });
+            }
+            
+            const updateSettingsBtn = document.querySelector('#settings .btn');
+            if (updateSettingsBtn) {
+                updateSettingsBtn.addEventListener('click', function() {
+                    alert('Settings updated successfully!');
+                });
+            }
+            
+            const addPaymentBtn = document.querySelector('#payment .btn');
+            if (addPaymentBtn) {
+                addPaymentBtn.addEventListener('click', function() {
+                    alert('Payment method added successfully!');
+                });
+            }
+        });
     </script>
 </body>
 </html>
