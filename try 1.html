@@ -4,41 +4,105 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Men's Regular Fit T-Shirt</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+        --primary-color: #000000;
+        --secondary-color: #ffffff;
+        --accent-color: #f5f5f5;
+        --text-color: #222222;
+        --hover-color: #777777;
+    }
+    
     body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      font-weight: 400;
-      color: #1a1a1a;
-      background-color: #fff;
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+        overflow-x: hidden;
+        padding-top: 5rem; /* Space for fixed header */
     }
-    header {
-      display: flex;
-      justify-content: flex-end;
-      gap: 40px;
-      padding: 20px 40px;
-      font-size: 14px;
-      border-bottom: 1px solid #eee;
-      position: relative;
+    
+    .navbar {
+        transition: background-color 0.3s ease;
     }
-    .header-item {
-      cursor: pointer;
-      position: relative;
+    
+    .navbar.scrolled {
+        background-color: var(--secondary-color);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-    .badge {
-      position: absolute;
-      top: -8px;
-      right: -12px;
-      background-color: #000;
-      color: white;
-      border-radius: 50%;
-      width: 18px;
-      height: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
+    
+    .dropdown:hover .dropdown-menu {
+        display: block;
     }
+    
+    .hero-section {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 90vh;
+    }
+    
+    /* Updated product overlay positioning */
+    .product-card:hover .product-overlay {
+        opacity: 1;
+    }
+    
+    .newsletter-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .mobile-menu {
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .mobile-menu.active {
+        transform: translateX(0);
+    }
+    
+    /* Background blur overlay */
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2); /* Reduced opacity from 0.5 to 0.2 */
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        z-index: 40;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    .menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Fade-in animation styles */
+    .fade-in-element {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in-element.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    /* Custom style for bigger font in Editorial Section */
+    .editorial-title {
+        font-size: 3.5rem; /* Adjust as needed, Tailwind's text-5xl is 3rem */
+        line-height: 1;
+    }
+    
+    /* Product page styles */
     .container {
       display: flex;
       padding: 40px;
@@ -249,20 +313,6 @@
       text-transform: uppercase;
       color: #444;
     }
-    .hamburger {
-      display: none;
-      position: absolute;
-      top: 25px;
-      left: 20px;
-      flex-direction: column;
-      gap: 4px;
-      cursor: pointer;
-    }
-    .hamburger div {
-      width: 20px;
-      height: 2px;
-      background-color: #000;
-    }
     /* Toast notification */
     .toast {
       position: fixed;
@@ -418,15 +468,8 @@
         width: 50px;
         height: 50px;
       }
-      header {
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 20px;
-        font-size: 13px;
-        text-align: center;
-      }
-      .hamburger {
-        display: flex;
+      body {
+        padding-top: 4rem; /* Adjust for mobile header */
       }
     }
     @media (max-width: 1200px) {
@@ -445,22 +488,74 @@
         max-width: 350px;
       }
     }
+    @media (max-width: 480px) {
+      .hero-section {
+        height: 60vh;
+      }
+    }
   </style>
 </head>
-<body>
-  <header>
-    <div class="hamburger">
-      <div></div>
-      <div></div>
-      <div></div>
+<body class="bg-white">
+    <!-- Top Navigation -->
+    <div class="bg-black text-white text-xs py-2 px-4 text-center"></div>
+    <!-- Main Navigation -->
+    <nav class="navbar fixed top-0 w-full z-50 bg-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Left Side -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Men</a>
+                    <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Women</a>
+                    <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Style advisor</a>
+                </div>
+                <!-- Center Logo -->
+                <div class="absolute left-1/2 transform -translate-x-1/2">
+                    <a href="#" class="text-2xl font-bold tracking-widest uppercase">CYLO</a>
+                </div>
+                <!-- Right Side -->
+                <div class="hidden md:flex items-center space-x-6 ml-auto">
+                    <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-search"></i></a>
+                    <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-user"></i></a>
+                    <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-heart"></i></a>
+                    <a href="#" id="header-shopping-bag" class="text-black hover:text-gray-600 relative">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span id="header-cart-count" class="absolute -top-2 -right-2 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs" style="display: none;">0</span>
+                    </a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="menu-toggle" class="text-black focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Background Blur Overlay -->
+    <div id="menu-overlay" class="menu-overlay"></div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 p-4">
+        <button id="menu-close" class="absolute top-4 right-4 text-black">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="mt-12 space-y-6">
+            <a href="#" class="block text-black uppercase text-sm font-medium py-2">Men</a>
+            <a href="#" class="block text-black uppercase text-sm font-medium py-2">Women</a>
+            <a href="#" class="block text-black uppercase text-sm font-medium py-2">Style advisor</a>
+            <div class="border-t border-gray-200 pt-4 space-y-4">
+                <a href="#" class="block text-black py-2"><i class="fas fa-search mr-2"></i>Search</a>
+                <a href="#" class="block text-black py-2"><i class="fas fa-user mr-2"></i>Account</a>
+                <a href="#" class="block text-black py-2"><i class="fas fa-heart mr-2"></i>Wishlist</a>
+                <a href="#" id="mobile-shopping-bag" class="block text-black py-2 relative">
+                    <i class="fas fa-shopping-bag mr-2"></i>Bag
+                    <span id="mobile-cart-count" class="absolute -top-1 right-4 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs" style="display: none;">0</span>
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="header-item">SEARCH</div>
-    <div class="header-item">LOG IN</div>
-    <div class="header-item shopping-bag" id="shopping-bag">
-      SHOPPING BAG [<span id="cart-count">0</span>]
-      <div class="badge" id="cart-badge" style="display: none;"></div>
-    </div>
-  </header>
+
   <div class="container">
     <div class="product-image">
       <div class="image-slider">
@@ -530,6 +625,42 @@
     if (!localStorage.getItem('cart')) {
       localStorage.setItem('cart', JSON.stringify([]));
     }
+    
+    // Header functionality
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuClose = document.getElementById('menu-close');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const navbar = document.querySelector('.navbar');
+    
+    menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.add('active');
+        menuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent body scrolling
+    });
+    
+    menuClose.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        document.body.style.overflow = ''; // Restore body scrolling
+    });
+    
+    // Close menu when clicking on the overlay
+    menuOverlay.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+    
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+    
     // DOM elements
     const colorBoxes = document.querySelectorAll('.color-box');
     const sizeBoxes = document.querySelectorAll('.size-box');
@@ -538,24 +669,26 @@
     const colorLabel = document.querySelector('.color-label');
     const addToCartBtn = document.getElementById('add-to-cart');
     const buyNowBtn = document.getElementById('buy-now');
-    const cartCount = document.getElementById('cart-count');
-    const cartBadge = document.getElementById('cart-badge');
     const toast = document.getElementById('toast');
-    const shoppingBag = document.getElementById('shopping-bag');
     const cart = document.getElementById('cart');
     const cartItemsContainer = document.getElementById('cart-items');
     const closeCartBtn = document.getElementById('close-cart');
     const clearCartBtn = document.getElementById('clear-cart');
     const proceedToPaymentBtn = document.getElementById('proceed-to-payment');
+    const headerShoppingBag = document.getElementById('header-shopping-bag');
+    const mobileShoppingBag = document.getElementById('mobile-shopping-bag');
+    
     // Slider elements
     const sliderTrack = document.getElementById('slider-track');
     const sliderDots = document.getElementById('slider-dots');
     const thumbnailNav = document.getElementById('thumbnail-nav');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
+    
     // Slider state
     let currentSlide = 0;
     let currentImages = [];
+    
     // Product data with multiple images
     const product = {
       id: 'tshirt-001',
@@ -596,6 +729,7 @@
         }
       }
     };
+    
     // Initialize slider
     function initializeSlider(images) {
       currentImages = images;
@@ -630,6 +764,7 @@
       
       updateSlider();
     }
+    
     // Update slider position
     function updateSlider() {
       const translateX = -currentSlide * 100;
@@ -645,24 +780,29 @@
         thumb.classList.toggle('active', index === currentSlide);
       });
     }
+    
     // Go to specific slide
     function goToSlide(index) {
       currentSlide = index;
       updateSlider();
     }
+    
     // Next slide
     function nextSlide() {
       currentSlide = (currentSlide + 1) % currentImages.length;
       updateSlider();
     }
+    
     // Previous slide
     function prevSlide() {
       currentSlide = (currentSlide - 1 + currentImages.length) % currentImages.length;
       updateSlider();
     }
+    
     // Slider event listeners
     nextBtn.addEventListener('click', nextSlide);
     prevBtn.addEventListener('click', prevSlide);
+    
     // Auto-play slider (optional)
     let autoPlayInterval;
     function startAutoPlay() {
@@ -671,15 +811,18 @@
     function stopAutoPlay() {
       clearInterval(autoPlayInterval);
     }
+    
     // Pause auto-play on hover
     const sliderContainer = document.querySelector('.slider-container');
     sliderContainer.addEventListener('mouseenter', stopAutoPlay);
     sliderContainer.addEventListener('mouseleave', startAutoPlay);
+    
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') prevSlide();
       if (e.key === 'ArrowRight') nextSlide();
     });
+    
     // Handle color selection
     colorBoxes.forEach(box => {
       box.addEventListener('click', () => {
@@ -689,6 +832,7 @@
         updateProductDisplay(selectedColor);
       });
     });
+    
     // Handle size selection
     sizeBoxes.forEach(box => {
       box.addEventListener('click', () => {
@@ -696,6 +840,7 @@
         box.classList.add('active');
       });
     });
+    
     // Update product display based on selected color
     function updateProductDisplay(color) {
       const colorData = product.colors[color];
@@ -707,23 +852,36 @@
       productDescription.textContent = colorData.description;
       colorLabel.innerHTML = `${colorData.name.toUpperCase()} | ${colorData.hex}<br>Choose color`;
     }
+    
     // Get current cart items
     function getCart() {
       return JSON.parse(localStorage.getItem('cart'));
     }
+    
     // Update cart count display
     function updateCartCount() {
       const cart = getCart();
       const count = cart.reduce((total, item) => total + item.quantity, 0);
-      cartCount.textContent = count;
+      
+      // Update header cart count
+      const headerCartCount = document.getElementById('header-cart-count');
+      const mobileCartCount = document.getElementById('mobile-cart-count');
       
       if (count > 0) {
-        cartBadge.textContent = count;
-        cartBadge.style.display = 'flex';
+        if (headerCartCount) {
+          headerCartCount.textContent = count;
+          headerCartCount.style.display = 'flex';
+        }
+        if (mobileCartCount) {
+          mobileCartCount.textContent = count;
+          mobileCartCount.style.display = 'flex';
+        }
       } else {
-        cartBadge.style.display = 'none';
+        if (headerCartCount) headerCartCount.style.display = 'none';
+        if (mobileCartCount) mobileCartCount.style.display = 'none';
       }
     }
+    
     // Add item to cart
     function addToCart() {
       const selectedColor = document.querySelector('.color-box.active').getAttribute('data-color');
@@ -754,6 +912,7 @@
       updateCartCount();
       showToast();
     }
+    
     // Show toast notification
     function showToast(message = "Item added to cart") {
       toast.textContent = message;
@@ -762,6 +921,7 @@
         toast.classList.remove('show');
       }, 3000);
     }
+    
     // Clear cart
     function clearCart() {
       localStorage.setItem('cart', JSON.stringify([]));
@@ -769,6 +929,7 @@
       renderCartItems();
       showToast("Cart cleared successfully");
     }
+    
     // Render cart items
     function renderCartItems() {
       const cart = getCart();
@@ -803,15 +964,18 @@
       
       document.getElementById('cart-subtotal').textContent = `₹ ${subtotal.toFixed(2)}`;
     }
-    // Open/close cart
-    shoppingBag.addEventListener('click', () => {
+    
+    // Open cart
+    function openCart() {
       cart.style.display = 'block';
       setTimeout(() => {
         cart.classList.add('open');
         document.body.classList.add('cart-open');
       }, 10);
       renderCartItems();
-    });
+    }
+    
+    // Close cart
     closeCartBtn.addEventListener('click', () => {
       cart.classList.remove('open');
       document.body.classList.remove('cart-open');
@@ -821,6 +985,7 @@
         }
       }, 400);
     });
+    
     // Clear cart button
     clearCartBtn.addEventListener('click', () => {
       const cart = getCart();
@@ -832,6 +997,7 @@
         }
       }
     });
+    
     // Proceed to payment
     proceedToPaymentBtn.addEventListener('click', () => {
       const cart = getCart();
@@ -841,6 +1007,7 @@
         alert('Proceeding to payment with your selected items');
       }
     });
+    
     // Adjust quantity in cart
     document.addEventListener('click', (event) => {
       if (event.target.classList.contains('increase') || event.target.classList.contains('decrease')) {
@@ -863,19 +1030,43 @@
         renderCartItems();
       }
     });
+    
     // Event listeners
-    addToCartBtn.addEventListener('click', addToCart);
+    addToCartBtn.addEventListener('click', () => {
+      addToCart();
+      openCart();
+    });
+    
     buyNowBtn.addEventListener('click', () => {
       addToCart();
-      alert('Proceeding to checkout with your selected items');
+      openCart();
     });
+    
+    // Shopping bag click handlers
+    if (headerShoppingBag) {
+      headerShoppingBag.addEventListener('click', (e) => {
+        e.preventDefault();
+        openCart();
+      });
+    }
+    
+    if (mobileShoppingBag) {
+      mobileShoppingBag.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Close mobile menu if open
+        mobileMenu.classList.remove('active');
+        menuOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+        openCart();
+      });
+    }
     
     // Close cart when clicking on the backdrop
     document.body.addEventListener('click', function(event) {
       // Check if cart is open
       if (document.body.classList.contains('cart-open')) {
-        // Check if click is outside the cart and not on the shopping bag
-        if (!cart.contains(event.target) && !shoppingBag.contains(event.target)) {
+        // Check if click is outside the cart
+        if (!cart.contains(event.target)) {
           cart.classList.remove('open');
           document.body.classList.remove('cart-open');
           setTimeout(() => {
