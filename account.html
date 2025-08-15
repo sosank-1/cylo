@@ -1,6 +1,561 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Men's Regular Fit T-Shirt</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+    
+    :root {
+        --primary-color: #000000;
+        --secondary-color: #ffffff;
+        --accent-color: #f5f5f5;
+        --text-color: #222222;
+        --hover-color: #777777;
+    }
+    
+    body {
+        font-family: 'Montserrat', sans-serif;
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+        overflow-x: hidden;
+        padding-top: 5rem; /* Space for fixed header */
+    }
+    
+    .navbar {
+        transition: background-color 0.3s ease;
+    }
+    
+    .navbar.scrolled {
+        background-color: var(--secondary-color);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    
+    .hero-section {
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 90vh;
+    }
+    
+    /* Updated product overlay positioning */
+    .product-card:hover .product-overlay {
+        opacity: 1;
+    }
+    
+    .newsletter-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .mobile-menu {
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .mobile-menu.active {
+        transform: translateX(0);
+    }
+    
+    /* Background blur overlay */
+    .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2); /* Reduced opacity from 0.5 to 0.2 */
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        z-index: 40;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    
+    .menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    /* Fade-in animation styles */
+    .fade-in-element {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .fade-in-element.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    /* Custom style for bigger font in Editorial Section */
+    .editorial-title {
+        font-size: 3.5rem; /* Adjust as needed, Tailwind's text-5xl is 3rem */
+        line-height: 1;
+    }
+    
+    /* Product page styles */
+    .container {
+      display: flex;
+      padding: 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .product-image {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: 400px;
+    }
+    /* Image Slider Styles */
+    .image-slider {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      max-width: 400px;
+      overflow: hidden;
+    }
+    .slider-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+    .slide {
+      min-width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: opacity 0.2s ease;
+    }
+    .slider-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background-color 0.2s ease;
+      z-index: 10;
+    }
+    .slider-nav:hover {
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    .slider-nav.prev {
+      left: 10px;
+    }
+    .slider-nav.next {
+      right: 10px;
+    }
+    .slider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 15px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #ddd;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+    .dot.active {
+      background-color: #000;
+    }
+    /* Thumbnail Navigation */
+    .thumbnail-nav {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 400px;
+    }
+    .thumbnail {
+      width: 60px;
+      height: 60px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color 0.2s ease;
+    }
+    .thumbnail.active {
+      border-color: #000;
+    }
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .product-info {
+      flex: 1;
+      padding-left: 60px;
+    }
+    .product-title {
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .product-price {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    .tax-info {
+      font-size: 11px;
+      color: gray;
+      margin-bottom: 20px;
+    }
+    .color-label,
+    .size-label {
+      font-size: 13px;
+      margin: 10px 0;
+    }
+    .color-options,
+    .size-options {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .color-box {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #000;
+      cursor: pointer;
+    }
+    .color-box.active {
+      outline: 2px solid #000;
+      outline-offset: 2px;
+    }
+    .size-box {
+      border: 1px solid black;
+      padding: 6px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+    .size-box:hover {
+      background-color: #f4f4f4;
+    }
+    .size-box.active {
+      background-color: black;
+      color: white;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 240px;
+    }
+    .buttons button {
+      padding: 10px 0;
+      border: 1px solid black;
+      background-color: white;
+      cursor: pointer;
+      font-size: 14px;
+      color: black;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .buttons button:first-child {
+      background-color: black;
+      color: white;
+    }
+    .buttons button:hover {
+      background-color: black;
+      color: white;
+    }
+    .buttons button:first-child:hover {
+      background-color: #333;
+    }
+    .product-description {
+      font-size: 13px;
+      color: #555;
+      margin-top: 20px;
+      line-height: 1.5;
+    }
+    .product-details {
+      font-size: 11px;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      text-transform: uppercase;
+      color: #444;
+    }
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #000;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+    /* Sliding cart styles */
+    .cart {
+      position: fixed;
+      right: -320px;
+      top: 0;
+      width: 300px;
+      height: 100%;
+      background-color: white;
+      box-shadow: -2px 0 15px rgba(0, 0, 0, 0.1);
+      transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      padding: 20px;
+      z-index: 1001;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+    .cart.open {
+      right: 0;
+      transform: translateX(0);
+    }
+    
+    body.cart-open::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    
+    body.cart-open::before {
+      opacity: 1;
+      backdrop-filter: blur(2px);
+      pointer-events: all; /* Enable pointer events for the backdrop */
+    }
+    .cart-item {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    .cart-item-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .cart-item-image {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+    .cart-item-info {
+      flex: 1;
+    }
+    .cart-item-name {
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .cart-item-details {
+      font-size: 12px;
+      color: #666;
+    }
+    .cart-item-price {
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .cart-item .quantity {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .cart-item button {
+      border: 1px solid #ddd;
+      background: white;
+      cursor: pointer;
+      font-size: 16px;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .proceed-btn {
+      background-color: #008000 !important;
+      color: white !important;
+      border: none !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+      margin-top: auto !important;
+      margin-bottom: 20px !important;
+    }
+    .proceed-btn:hover {
+      background-color: #006400 !important;
+    }
+    .clear-cart-btn {
+      background-color: #950606 !important;
+      color: white !important;
+      border: none !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+      margin-top: 10px !important;
+    }
+    .clear-cart-btn:hover {
+      background-color: #700505 !important;
+    }
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        padding: 20px;
+      }
+      .product-image {
+        justify-content: center;
+        margin-bottom: 20px;
+        max-width: 100%;
+      }
+      .product-info {
+        padding-left: 0;
+      }
+      .slider-container {
+        height: 300px;
+        max-width: 300px;
+      }
+      .thumbnail-nav {
+        max-width: 100%;
+      }
+      .thumbnail {
+        width: 50px;
+        height: 50px;
+      }
+      body {
+        padding-top: 4rem; /* Adjust for mobile header */
+      }
+    }
+    @media (max-width: 1200px) {
+      .product-image {
+        max-width: 350px;
+      }
+      .slider-container {
+        height: 350px;
+        max-width: 350px;
+      }
+      .thumbnail {
+        width: 50px;
+        height: 50px;
+      }
+      .thumbnail-nav {
+        max-width: 350px;
+      }
+    }
+    @media (max-width: 480px) {
+      .hero-section {
+        height: 60vh;
+      }
+    }
+  </style>
+</head>
+<body class="bg-white">
+    <!-- Main Navigation -->
+    <nav class="navbar fixed top-0 w-full z-50 bg-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Left Side -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Men</a>
+                    <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Women</a>
+                    <a href="#" class="text-black hover:text-gray-600 uppercase text-sm font-medium">Style advisor</a>
+                </div>
+                <!-- Center Logo -->
+                <div class="absolute left-1/2 transform -translate-x-1/2">
+                    <a href="#" class="text-2xl font-bold tracking-widest uppercase">CYLO</a>
+                </div>
+                <!-- Right Side -->
+                <div class="hidden md:flex items-center space-x-6 ml-auto">
+                    <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-search"></i></a>
+                    <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-user"></i></a>
+                    <a href="#" class="text-black hover:text-gray-600"><i class="fas fa-heart"></i></a>
+                    <a href="#" id="header-shopping-bag" class="text-black hover:text-gray-600 relative">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span id="header-cart-count" class="absolute -top-2 -right-2 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs" style="display: none;">0</span>
+                    </a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="menu-toggle" class="text-black focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Background Blur Overlay -->
+    <div id="menu-overlay" class="menu-overlay"></div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu fixed top-0 right-0 h-full w-64 bg-white shadow-lg z-50 p-4">
+        <button id="menu-close" class="absolute top-4 right-4 text-black">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="mt-12 space-y-6">
+            <a href="#" class="block text-black uppercase text-sm font-medium py-2">Men</a>
+            <a href="#" class="block text-black uppercase text-sm font-medium py-2">Women</a>
+            <a href="#" class="block text-black uppercase text-sm font-medium py-2">Style advisor</a>
+            <div class="border-t border-gray-200 pt-4 space-y-4">
+                <a href="#" class="block text-black py-2"><i class="fas fa-search mr-2"></i>Search</a>
+                <a href="#" class="block text-black py-2"><i class="fas fa-user mr-2"></i>Account</a>
+                <a href="#" class="block text-black py-2"><i class="fas fa-heart mr-2"></i>Wishlist</a>
+                <a href="#" id="mobile-shopping-bag" class="block text-black py-2 relative">
+                    <i class="fas fa-shopping-bag mr-2"></i>Bag
+                    <span id="mobile-cart-count" class="absolute -top-1 right-4 bg-black text-white rounded-full w-5 h-5 flex items-center justify-center text-xs" style="display: none;">0</span>
+                </a>
+            </div>
+        </div>
+    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Dashboard</title>
