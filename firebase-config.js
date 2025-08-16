@@ -1,10 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import {
-  getAuth,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -19,18 +14,3 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-
-// Reset password
-const Reset = document.getElementById("reset");
-Reset.addEventListener("click", function (event) {
-  event.preventDefault();
-
-  const email = document.getElementById("email").value;
-  sendPasswordResetEmail(auth, email)
-    .then(() => {
-      alert("Password reset email sent!");
-    })
-    .catch((error) => {
-      alert("error: " + error.code + " - " + error.message);
-    });
-});
