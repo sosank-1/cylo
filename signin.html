@@ -109,10 +109,10 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { app, auth } from './firebase-config.js';
-        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } 
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile } 
         from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-        // Tab switch
+        // Tab switch functionality
         window.switchTab = function(tabId, event) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
@@ -120,7 +120,7 @@
             event.currentTarget.classList.add('active');
         };
 
-        // Sign In
+        // Sign In with Email and Password
         document.getElementById('signin-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
@@ -134,9 +134,10 @@
             }
         });
 
-        // Sign Up
+        // Sign Up with Email and Password
         document.getElementById('signup-form').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const name = document.getElementById('name').value; // Get full name for signup
             const email = document.getElementById('new-email').value;
             const password = document.getElementById('new-password').value;
             const confirmPassword = document.getElementById('confirm-password').value;
@@ -145,7 +146,11 @@
                 return;
             }
             try {
-                await createUserWithEmailAndPassword(auth, email, password);
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                // Update user profile with display name
+                await updateProfile(userCredential.user, {
+                    displayName: name
+                });
                 alert("Account created successfully!");
                 window.location.href = "account.html"; // Redirect to account page
             } catch (error) {
@@ -165,11 +170,11 @@
             }
         });
 
-        // Google Sign Up
+        // Google Sign Up (uses the same signInWithPopup as Google Sign In, Firebase handles account creation)
         document.getElementById('google-signup').addEventListener('click', async () => {
             try {
                 await signInWithPopup(auth, provider);
-                alert("Account created with Google!");
+                alert("Account created/signed in with Google!");
                 window.location.href = "account.html"; // Redirect to account page
             } catch (error) {
                 alert(error.message);
