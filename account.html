@@ -312,6 +312,26 @@
         .error-message.show {
             display: block;
         }
+
+        /* Orders List Styles (Added for functionality) */
+        .orders-list {
+            list-style: none;
+            padding: 0;
+        }
+        .order-item {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: var(--light-bg);
+        }
+        .order-item h4 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .order-status {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
@@ -432,7 +452,10 @@
                 </div>
                 
                 <div class="minimal-card">
-                    <div class="empty-state">
+                    <ul class="orders-list" id="orders-list">
+                        <!-- Orders will be populated here dynamically -->
+                    </ul>
+                    <div class="empty-state" id="orders-empty-state">
                         <i class="fas fa-shopping-bag"></i>
                         <h3>No orders yet</h3>
                         <p>When you place an order, it will appear here.</p>
@@ -449,8 +472,17 @@
                 
                 <div class="minimal-card">
                     <h3>Preferences</h3>
-                    <p>Manage your account preferences and settings.</p>
-                    <button class="btn">Update Settings</button>
+                    <form id="settings-form">
+                        <div class="form-group">
+                            <label for="newsletter">Subscribe to Newsletter</label>
+                            <input type="checkbox" id="newsletter" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="notifications">Email Notifications</label>
+                            <input type="checkbox" id="notifications" class="form-control">
+                        </div>
+                        <button type="submit" class="btn">Update Settings</button>
+                    </form>
                 </div>
             </section>
             
@@ -461,7 +493,10 @@
                 </div>
                 
                 <div class="minimal-card">
-                    <div class="empty-state">
+                    <ul class="orders-list" id="wishlist-list">
+                        <!-- Wishlist items will be populated here dynamically -->
+                    </ul>
+                    <div class="empty-state" id="wishlist-empty-state">
                         <i class="fas fa-heart"></i>
                         <h3>Your wishlist is empty</h3>
                         <p>Add items to your wishlist and they will appear here.</p>
@@ -478,8 +513,15 @@
                 
                 <div class="minimal-card">
                     <h3>Payment Methods</h3>
-                    <p>Manage your saved payment methods.</p>
-                    <button class="btn">Add Payment Method</button>
+                    <ul class="orders-list" id="payment-methods-list">
+                        <!-- Payment methods will be populated here dynamically -->
+                    </ul>
+                    <div class="empty-state" id="payment-empty-state">
+                        <i class="fas fa-credit-card"></i>
+                        <h3>No payment methods saved</h3>
+                        <p>Add a payment method to make checkout faster.</p>
+                        <button class="btn" id="add-payment-btn">Add Payment Method</button>
+                    </div>
                 </div>
             </section>
             
@@ -490,7 +532,10 @@
                 </div>
                 
                 <div class="minimal-card">
-                    <div class="empty-state">
+                    <ul class="orders-list" id="reviews-list">
+                        <!-- Reviews will be populated here dynamically -->
+                    </ul>
+                    <div class="empty-state" id="reviews-empty-state">
                         <i class="fas fa-star"></i>
                         <h3>No reviews yet</h3>
                         <p>When you review a product, it will appear here.</p>
@@ -506,7 +551,10 @@
                 </div>
                 
                 <div class="minimal-card">
-                    <div class="empty-state">
+                    <ul class="orders-list" id="returns-list">
+                        <!-- Returns will be populated here dynamically -->
+                    </ul>
+                    <div class="empty-state" id="returns-empty-state">
                         <i class="fas fa-undo"></i>
                         <h3>No returns yet</h3>
                         <p>When you request a return, it will appear here.</p>
@@ -541,30 +589,43 @@
                 // If user is not logged in, redirect to the sign-in page
                 window.location.href = "signin.html"; 
             } else {
-                // If user is logged in, display their email
+                // If user is logged in, display their email and display name
                 const email = user.email;
-                const displayName = user.displayName || "";
-                
-                // Set email in form
+                const displayName = user.displayName || email; // Use email if displayName is null
+
+                // Set email and display name in form
                 document.getElementById("email").value = email;
                 document.getElementById("display-name").value = displayName;
                 
                 // Set welcome message
-                document.getElementById("welcome-name").textContent = displayName || email;
+                document.getElementById("welcome-name").textContent = displayName;
                 
-                // Load additional user data if available
+                // Load additional user data from localStorage if available
                 const userData = JSON.parse(localStorage.getItem('userData')) || {};
                 document.getElementById("phone").value = userData.phone || "";
                 document.getElementById("address").value = userData.address || "";
+
+                // Example: Populate Orders (replace with actual data fetching)
+                populateOrders(user.uid);
+                populateWishlist(user.uid);
+                populatePaymentMethods(user.uid);
+                populateReviews(user.uid);
+                populateReturns(user.uid);
+                loadSettings(user.uid);
             }
         });
         
         // Logout function
         window.handleLogout = async function() {
             if (confirm('Are you sure you want to log out?')) {
-                await signOut(auth);
-                // After logout, redirect to the sign-in page
-                window.location.href = "signin.html"; 
+                try {
+                    await signOut(auth);
+                    // After logout, redirect to the sign-in page
+                    window.location.href = "signin.html"; 
+                } catch (error) {
+                    console.error("Error logging out:", error);
+                    alert("Error logging out: " + error.message);
+                }
             }
         };
         
@@ -578,17 +639,21 @@
             const address = document.getElementById('address').value;
             
             try {
+                const currentUser = auth.currentUser;
+
                 // Update display name in Firebase Auth
-                await updateProfile(auth.currentUser, {
-                    displayName: displayName
-                });
-                
-                // Update email in Firebase Auth
-                if (email !== auth.currentUser.email) {
-                    await updateEmail(auth.currentUser, email);
+                if (displayName !== currentUser.displayName) {
+                    await updateProfile(currentUser, {
+                        displayName: displayName
+                    });
                 }
                 
-                // Save additional user data to localStorage
+                // Update email in Firebase Auth
+                if (email !== currentUser.email) {
+                    await updateEmail(currentUser, email);
+                }
+                
+                // Save additional user data to localStorage (or a database like Firestore)
                 const userData = {
                     phone: phone,
                     address: address
@@ -629,6 +694,133 @@
                 }, 5000);
             }
         });
+
+        // Settings form submission
+        document.getElementById('settings-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newsletter = document.getElementById('newsletter').checked;
+            const notifications = document.getElementById('notifications').checked;
+
+            // In a real application, you would save these settings to a database
+            console.log("Settings saved:", { newsletter, notifications });
+            alert("Settings updated successfully!");
+        });
+
+        // Placeholder functions for populating dynamic content
+        function populateOrders(userId) {
+            const ordersList = document.getElementById('orders-list');
+            const ordersEmptyState = document.getElementById('orders-empty-state');
+            // In a real app, fetch orders from a database using userId
+            const orders = JSON.parse(localStorage.getItem(`orders_${userId}`)) || []; // Example from localStorage
+
+            if (orders.length > 0) {
+                ordersEmptyState.style.display = 'none';
+                ordersList.innerHTML = orders.map(order => `
+                    <li class="order-item">
+                        <h4>Order #${order.id}</h4>
+                        <p>Date: ${order.date}</p>
+                        <p>Total: $${order.total.toFixed(2)}</p>
+                        <p>Status: <span class="order-status">${order.status}</span></p>
+                    </li>
+                `).join('');
+            } else {
+                ordersEmptyState.style.display = 'block';
+                ordersList.innerHTML = '';
+            }
+        }
+
+        function populateWishlist(userId) {
+            const wishlistList = document.getElementById('wishlist-list');
+            const wishlistEmptyState = document.getElementById('wishlist-empty-state');
+            // In a real app, fetch wishlist items from a database using userId
+            const wishlist = JSON.parse(localStorage.getItem(`wishlist_${userId}`)) || []; // Example from localStorage
+
+            if (wishlist.length > 0) {
+                wishlistEmptyState.style.display = 'none';
+                wishlistList.innerHTML = wishlist.map(item => `
+                    <li class="order-item">
+                        <h4>${item.name}</h4>
+                        <p>Price: $${item.price.toFixed(2)}</p>
+                        <p>Added: ${item.dateAdded}</p>
+                    </li>
+                `).join('');
+            } else {
+                wishlistEmptyState.style.display = 'block';
+                wishlistList.innerHTML = '';
+            }
+        }
+
+        function populatePaymentMethods(userId) {
+            const paymentMethodsList = document.getElementById('payment-methods-list');
+            const paymentEmptyState = document.getElementById('payment-empty-state');
+            // In a real app, fetch payment methods from a database using userId
+            const paymentMethods = JSON.parse(localStorage.getItem(`paymentMethods_${userId}`)) || []; // Example from localStorage
+
+            if (paymentMethods.length > 0) {
+                paymentEmptyState.style.display = 'none';
+                paymentMethodsList.innerHTML = paymentMethods.map(method => `
+                    <li class="order-item">
+                        <h4>${method.type} ending in ${method.lastFour}</h4>
+                        <p>Expires: ${method.expiry}</p>
+                    </li>
+                `).join('');
+            } else {
+                paymentEmptyState.style.display = 'block';
+                paymentMethodsList.innerHTML = '';
+            }
+        }
+
+        function populateReviews(userId) {
+            const reviewsList = document.getElementById('reviews-list');
+            const reviewsEmptyState = document.getElementById('reviews-empty-state');
+            // In a real app, fetch reviews from a database using userId
+            const reviews = JSON.parse(localStorage.getItem(`reviews_${userId}`)) || []; // Example from localStorage
+
+            if (reviews.length > 0) {
+                reviewsEmptyState.style.display = 'none';
+                reviewsList.innerHTML = reviews.map(review => `
+                    <li class="order-item">
+                        <h4>${review.productName} - ${review.rating} Stars</h4>
+                        <p>${review.comment}</p>
+                        <p>Date: ${review.date}</p>
+                    </li>
+                `).join('');
+            } else {
+                reviewsEmptyState.style.display = 'block';
+                reviewsList.innerHTML = '';
+            }
+        }
+
+        function populateReturns(userId) {
+            const returnsList = document.getElementById('returns-list');
+            const returnsEmptyState = document.getElementById('returns-empty-state');
+            // In a real app, fetch returns from a database using userId
+            const returns = JSON.parse(localStorage.getItem(`returns_${userId}`)) || []; // Example from localStorage
+
+            if (returns.length > 0) {
+                returnsEmptyState.style.display = 'none';
+                returnsList.innerHTML = returns.map(item => `
+                    <li class="order-item">
+                        <h4>Return for Order #${item.orderId}</h4>
+                        <p>Item: ${item.productName}</p>
+                        <p>Status: <span class="order-status">${item.status}</span></p>
+                    </li>
+                `).join('');
+            } else {
+                returnsEmptyState.style.display = 'block';
+                returnsList.innerHTML = '';
+            }
+        }
+
+        function loadSettings(userId) {
+            // In a real app, load settings from a database
+            const settings = JSON.parse(localStorage.getItem(`settings_${userId}`)) || {
+                newsletter: false,
+                notifications: true
+            };
+            document.getElementById('newsletter').checked = settings.newsletter;
+            document.getElementById('notifications').checked = settings.notifications;
+        }
     </script>
     
     <script>
@@ -697,55 +889,60 @@
                 profileForm.classList.remove('active');
                 
                 // Reset form to current values
-                const welcomeName = document.getElementById('welcome-name').textContent;
-                const userData = JSON.parse(localStorage.getItem('userData')) || {};
-                
-                document.getElementById('display-name').value = welcomeName;
-                document.getElementById('email').value = auth.currentUser.email;
-                document.getElementById('phone').value = userData.phone || "";
-                document.getElementById('address').value = userData.address || "";
+                // This part relies on `auth.currentUser` being available, which is handled by onAuthStateChanged
+                // For a robust solution, you might re-fetch user data or store it in a global state.
+                if (window.auth && window.auth.currentUser) { // Check if auth and currentUser are available
+                    const currentUser = window.auth.currentUser;
+                    const userData = JSON.parse(localStorage.getItem('userData')) || {};
+                    
+                    document.getElementById('display-name').value = currentUser.displayName || "";
+                    document.getElementById('email').value = currentUser.email || "";
+                    document.getElementById('phone').value = userData.phone || "";
+                    document.getElementById('address').value = userData.address || "";
+                }
             });
             
             // Handle button clicks in empty states
             const startShoppingBtn = document.querySelector('#orders .btn');
             if (startShoppingBtn) {
                 startShoppingBtn.addEventListener('click', function() {
-                    window.location.href = 'index.html';
+                    window.location.href = 'index.html'; // Assuming you have an index.html for shopping
                 });
             }
             
             const browseProductsBtns = document.querySelectorAll('#wishlist .btn, #reviews .btn');
             browseProductsBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
-                    window.location.href = 'index.html';
+                    window.location.href = 'index.html'; // Assuming you have an index.html for browsing products
                 });
             });
             
             const viewOrdersBtn = document.querySelector('#returns .btn');
             if (viewOrdersBtn) {
                 viewOrdersBtn.addEventListener('click', function() {
-                    document.querySelector('[data-section="orders"]').click();
+                    document.querySelector('[data-section="orders"]').click(); // Switch to orders tab
                 });
             }
             
             const contactSupportBtn = document.querySelector('#help .btn');
             if (contactSupportBtn) {
                 contactSupportBtn.addEventListener('click', function() {
-                    alert('Contact: support@cylo.com');
+                    alert('Contact: support@cylo.com'); // Placeholder for contact action
                 });
             }
             
             const updateSettingsBtn = document.querySelector('#settings .btn');
             if (updateSettingsBtn) {
                 updateSettingsBtn.addEventListener('click', function() {
-                    alert('Settings updated successfully!');
+                    // The form submission for settings is handled by the script type="module"
+                    // This button click will trigger the form's submit event.
                 });
             }
             
             const addPaymentBtn = document.querySelector('#payment .btn');
             if (addPaymentBtn) {
                 addPaymentBtn.addEventListener('click', function() {
-                    alert('Payment method added successfully!');
+                    alert('Redirecting to payment setup...'); // Placeholder for adding payment method
                 });
             }
         });
