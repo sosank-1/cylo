@@ -229,7 +229,7 @@
                         </div>
                     </div>
                     
-                    <a href="account.html" class="text-black hover:text-gray-600">
+                    <a href="#" id="account-link-desktop" class="text-black hover:text-gray-600">
                         <i class="fas fa-user"></i>
                     </a>
                     
@@ -278,7 +278,7 @@
                     </div>
                 </div>
                 
-                <a href="account.html" class="block text-black py-2">
+                <a href="#" id="account-link-mobile" class="block text-black py-2">
                     <i class="fas fa-user mr-2"></i>Account
                 </a>
                 
@@ -475,7 +475,11 @@
         </div>
     </footer>
     
-    <script>
+    <script type="module">
+        // Import Firebase auth from your config file
+        import { auth } from './firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
         // Mobile Menu Toggle with Background Blur
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -751,6 +755,30 @@
                 observer.observe(element);
             });
         });
+
+        // Account Redirection Logic
+        const accountLinkDesktop = document.getElementById('account-link-desktop');
+        const accountLinkMobile = document.getElementById('account-link-mobile');
+
+        function handleAccountClick(event) {
+            event.preventDefault(); // Prevent default link behavior
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    // User is signed in, redirect to account.html
+                    window.location.href = "account.html";
+                } else {
+                    // User is not signed in, redirect to signin.html
+                    window.location.href = "signin.html";
+                }
+            });
+        }
+
+        if (accountLinkDesktop) {
+            accountLinkDesktop.addEventListener('click', handleAccountClick);
+        }
+        if (accountLinkMobile) {
+            accountLinkMobile.addEventListener('click', handleAccountClick);
+        }
     </script>
 </body>
 </html>
